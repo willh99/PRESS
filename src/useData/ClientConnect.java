@@ -1,3 +1,5 @@
+package useData;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -74,7 +76,6 @@ public class ClientConnect {
     public void getFile(String filename)
     {
         System.out.println("Requested File: "+filename);
-        String response = "s";
         try {
             File file = new File(filename);
             // Create new file if it does not exist
@@ -87,7 +88,6 @@ public class ClientConnect {
             send(filename);
         
             // Get content in bytes and write to a file
-            
             byte[] buffer = new byte[8192];
             for(int counter=0; (counter = din.read(buffer, 0, buffer.length)) >= 0;)
             {
