@@ -14,89 +14,91 @@ import java.util.Scanner;
 
 public class ClientConnect {
 
-    private ObjectOutputStream outputObj;
-    private ObjectInputStream inputObj;
-    //private BufferedReader input;
-    //private PrintWriter output;
-    //private BufferedReader stdIn;
-    
-    private String message = "";
-    private final String serverIP;
-    private final int portNumber;
-    private Socket socketConnect;
-    private Scanner scan;
-    
-    public ClientConnect(String host, int port){
-        serverIP = host;    portNumber = port;
-    }
-    
-    public void startClient() throws IOException{
-        scan = new Scanner(System.in);
-        try{
-            serverConnect();
-            setUpStreams();
-            whileChatting();
-        }catch(EOFException eofEx){
-            System.out.println("Client terminated connection");
-        }finally{
-            closeConnection();
-        }
-    }
-    
-    //Connect to a server
-    private void serverConnect(){
-        System.out.println("Attempting Connection");
-        try{
-            socketConnect = new Socket(InetAddress.getByName(serverIP), portNumber);
-            System.out.println("Connected to: "+serverIP+" on port: "+portNumber);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    
-    private void setUpStreams(){
-        try{
-            outputObj = new ObjectOutputStream(socketConnect.getOutputStream());
-            inputObj = new ObjectInputStream(socketConnect.getInputStream());
-            outputObj.flush();
-            System.out.println("Streams are good");
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-    
-    private void whileChatting() throws IOException{
-        System.out.println("You can now chat!");
-        String inMessage="";
-        
-        do{
-            try{
-                message = scan.nextLine();
-                sendMessage(message);
-                inMessage = (String) inputObj.readObject();
-                System.out.println(inMessage);
-            }catch(ClassNotFoundException e){
-                System.err.println("Unknown object reieved");
-            }
-        }while(!inMessage.equals("CLIENT: QUIT"));
+    private Socket socket = null;
+    private FileOutputStream fos = null;
+    private DataInputStream din = null;
+    private PrintStream pout = null;
+    private Scanner scan = null;
 
+    public ClientConnect(InetAddress address, int port) throws IOException
+    {
+        System.out.println("Initializing Client");
+        socket = new Socket(address, port);
+        scan = new Scanner(System.in);
+        din = new DataInputStream(socket.getInputStream());
+        pout = new PrintStream(socket.getOutputStream());
+    }
+
+    public void send(String msg) throws IOException
+    {
+        pout.print(msg);
+        pout.flush();
+    }
+
+    public String recv() throws IOException
+    {
+        byte[] bytes = new byte[1024];
+        din.read(bytes);
+        String reply = new String(bytes, "UTF-8");
+        System.out.println("Inside recv(): ");
+        return reply;
+    }
+
+    public void closeConnections() throws IOException
+    {
+        // Clean up when a connection is ended
+        socket.close();
+        din.close();
+        pout.close();
+        scan.close();
     }
     
-    private void closeConnection() throws IOException{
-        System.out.println("Closing down connection ...");
-        outputObj.close();
-        inputObj.close();
-        socketConnect.close();
-    }
-    
-    private void sendMessage(String s) {
-        try{
-        outputObj.writeObject("CLIENT: "+s);
-        outputObj.flush();
-        System.out.println("CLIENT: "+s);
-        }catch(IOException e){
-            System.err.println("Error writting message");
+    public void chat() throws IOException 
+    {    
+        String response = "s";
+        
+        System.out.println("Initiating Chat Sequence");
+        while(!response.equals("QUIT")){
+            System.out.print("Client: ");
+            String message = scan.nextLine();
+            send(message);
+            if(message.equals("QUIT"))
+                break;
+            response = recv();
+            System.out.println("Server: " + response);
         }
+        closeConnections();
     }
     
+    // Request a specific file from the server
+    public void getFile(String filename)
+    {
+        System.out.println("Requested File: "+filename);
+        String response = "s";
+        try {
+            File file = new File(filename);
+            // Create new file if it does not exist
+            // Then request the file from server
+            if(!file.exists()){
+                file.createNewFile();
+                System.out.println("Created New File: "+filename);
+            }
+            fos = new FileOutputStream(file);
+            send(filename);
+        
+            // Get content in bytes and write to a file
+            
+            byte[] buffer = new byte[8192];
+            for(int counter=0; (counter = din.read(buffer, 0, buffer.length)) >= 0;)
+            {
+                    fos.write(buffer, 0, counter);
+            }
+            fos.flush();
+            fos.close();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
 }
