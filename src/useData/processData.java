@@ -5,10 +5,8 @@
  */
 package useData;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.Dimension;
+import java.io.*;
 import static java.lang.Thread.sleep;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,13 +16,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.*;
@@ -36,7 +34,7 @@ import org.jfree.data.xy.*;
 
 public class processData {
 
-    public static void plotPower(){
+    public static JPanel plotPower(){
         int[][] XY = new int[10][2];
         for(int i=0; i<XY.length; i++){
             for(int j=0; j<2; j++){
@@ -49,15 +47,17 @@ public class processData {
                 series.add(XY[j][0], XY[j][1]);
         }
 
+        // Add the series to a data set, add the dataset to a chart,
+        // and then add the chart to a ChartPanel
         XYDataset xyData = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart ("XYLine Chart using JFreeChart", "X", "Y",
                 xyData, PlotOrientation.VERTICAL, true, true, false);
-        ChartFrame frame1=new ChartFrame("XYLine Chart",chart);
-        frame1.setSize(300,300);
-        frame1.setVisible(true);
+        ChartPanel chPanel = new ChartPanel(chart);
+        chPanel.setPreferredSize(new Dimension(300,300));
+        return chPanel;
     }
     
-    public static void plotPriceData() {
+    public static JPanel plotPriceData() {
         
         List<dataPoint> priceData = readPriceData("TodaysData.csv");
         XYSeries series = new XYSeries("24h Power Pricing");
@@ -69,15 +69,17 @@ public class processData {
         XYDataset xyData = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart ("NYISO LBMP", "Time", "$/MWH",
                 xyData, PlotOrientation.VERTICAL, true, true, false);
-        ChartFrame frame1=new ChartFrame("Price Data",chart);
-        frame1.setSize(500,500);
-        frame1.setVisible(true);
+        ChartPanel chPanel =new ChartPanel(chart);
+        chPanel.setPreferredSize(new Dimension(300,300));
+        return chPanel;
+        //frame1.setSize(500,500);
+        //frame1.setVisible(true);
     }
     
     // downloads new file from the Internet to be used for data decision making
     public static void downloadData() throws IOException {
         
-        // TO DO: make URL dynamic to pull new data every day
+        // TODO: make URL dynamic to pull new data every day
         String dataSource = "http://mis.nyiso.com/public/csv/realtime/20171130realtime_zone.csv";
         
         // Downloads a new .csv file from NYISO to be used for data processing
@@ -114,6 +116,7 @@ public class processData {
         try(BufferedReader br = Files.newBufferedReader(pathToFile,
                 StandardCharsets.US_ASCII)){
             // String used to read lines. Read first line here
+            // Note: header line is skipped as it does not hold data
             String line = br.readLine();
             line = br.readLine();
             
@@ -128,7 +131,9 @@ public class processData {
                 String name = attributes[1];
                 double data = Double.parseDouble(attributes[3]);
                 
-                // Only add data from the chosen distribution zone
+                // Only add data from the chosen distribution zone to a 
+                // dataPoint class (see below). Each dataPoint instance is
+                // added to a List of dataPoint's 
                 if(name.equals("N.Y.C.")){
                     dataPoint dP = new dataPoint(d, name, data);
                     dataList.add(dP);
@@ -144,8 +149,12 @@ public class processData {
         return dataList;
     }
 
+    
+    // TODO: add fail-safes for instances where data is either not found
+    //       of unable to be process
     public static void analyizePriceData () {
         
+        // Retrieve List of dataPoint's (see below) holding relevant data
         List<dataPoint> dataList = readPriceData("TodaysData.csv");
         double max=0, min=1000;
         boolean buy =  false;
@@ -162,6 +171,10 @@ public class processData {
         max = 0.7*max;
         min = 0.3*max;
         
+        // Create a status JSON depending on the current state of 
+        // the system and the change in the data.
+        // e.g. if currently buying and price goes above 70% of maximum,
+        //      then generate a 'sell' (buy=false) JSON
         for(int i=0; i<dataList.size(); i++){
             if(dataList.get(i).getPrice() > max && buy){
                 buy = false;
@@ -184,9 +197,11 @@ public class processData {
 class dataPoint {
     
     // Class to hold relevent information about a data point
-    private Date timeStamp;
-    private String name;
-    private double price;
+    // Holds time of price data, name of associated region,
+    // and the price at given the aforementioned parameters
+    private final Date timeStamp;
+    private final String name;
+    private final double price;
     
     public dataPoint(Date tS, String n, double p){
         timeStamp=tS; name=n; price=p;

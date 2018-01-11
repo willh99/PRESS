@@ -1,12 +1,13 @@
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import useData.processData;
 
 /*
@@ -97,6 +98,11 @@ public class PRESS_hud extends javax.swing.JFrame {
         DataButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 DataButtonMouseClicked(evt);
+            }
+        });
+        DataButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DataButtonActionPerformed(evt);
             }
         });
 
@@ -215,9 +221,21 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void DataButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DataButtonMouseClicked
 
-        processData.plotPower();
-        processData.plotPriceData();
+        // Get ChartPanels from data and add them to a container panel
+        JPanel container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
+        JPanel panel1 = processData.plotPower();
+        JFrame frame = new JFrame();;
+        JPanel panel2 = processData.plotPriceData();
+        
         processData.analyizePriceData();
+        
+        // Add container to frame
+        container.add(panel1);
+        container.add(panel2);
+        frame.add(container);
+        frame.setSize(this.getSize());
+        frame.setVisible(true);
     }//GEN-LAST:event_DataButtonMouseClicked
 
     private void downloadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadButtonMouseClicked
@@ -270,6 +288,10 @@ public class PRESS_hud extends javax.swing.JFrame {
             Status_label.setText("System Status: Sell");
         }
     }//GEN-LAST:event_SellButtonActionPerformed
+
+    private void DataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DataButtonActionPerformed
 
     /**
      * @param args the command line arguments
