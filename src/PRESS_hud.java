@@ -1,9 +1,12 @@
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
@@ -32,6 +35,9 @@ public class PRESS_hud extends javax.swing.JFrame {
         
         Dimension D = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(D.width/2, D.height/2 );
+        mainPanel.setSize(this.getContentPane().getSize());
+        dataPanel.setSize(mainPanel.getSize());
+        homePanel.setSize(mainPanel.getSize());
     }
 
     /**
@@ -43,18 +49,20 @@ public class PRESS_hud extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        Status_label = new javax.swing.JLabel();
+        mainPanel = new javax.swing.JPanel();
+        homePanel = new javax.swing.JPanel();
         BuyButton = new javax.swing.JButton();
         SellButton = new javax.swing.JButton();
-        DataButton = new javax.swing.JButton();
-        Logo = new javax.swing.JLabel();
-        downloadButton = new javax.swing.JButton();
+        Status_label = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        Logo = new javax.swing.JLabel();
+        DataButton = new javax.swing.JButton();
+        downloadButton = new javax.swing.JButton();
+        dataPanel = new javax.swing.JPanel();
         MainMenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
+        connectMenuItem = new javax.swing.JMenuItem();
         EditMenuItem = new javax.swing.JMenu();
         exitMenuItem = new javax.swing.JMenuItem();
         AboutMenu = new javax.swing.JMenu();
@@ -62,23 +70,10 @@ public class PRESS_hud extends javax.swing.JFrame {
         HelpMenu = new javax.swing.JMenu();
         HelpMenuItem = new javax.swing.JMenuItem();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 204, 102));
 
-        Status_label.setText("System Status:");
+        mainPanel.setLayout(new java.awt.CardLayout());
 
         BuyButton.setText("Buy");
         BuyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -94,31 +89,7 @@ public class PRESS_hud extends javax.swing.JFrame {
             }
         });
 
-        DataButton.setText("See Live Data");
-        DataButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                DataButtonMouseClicked(evt);
-            }
-        });
-        DataButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DataButtonActionPerformed(evt);
-            }
-        });
-
-        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LOGO.000.jpg"))); // NOI18N
-        Logo.setText("jLabel2");
-        Logo.setMaximumSize(new java.awt.Dimension(350, 150));
-        Logo.setMinimumSize(new java.awt.Dimension(350, 150));
-        Logo.setName(""); // NOI18N
-        Logo.setPreferredSize(new java.awt.Dimension(350, 150));
-
-        downloadButton.setText("Download Data");
-        downloadButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                downloadButtonMouseClicked(evt);
-            }
-        });
+        Status_label.setText("System Status:");
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -133,7 +104,92 @@ public class PRESS_hud extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LOGO.000.jpg"))); // NOI18N
+        Logo.setText("jLabel2");
+        Logo.setMaximumSize(new java.awt.Dimension(350, 150));
+        Logo.setMinimumSize(new java.awt.Dimension(350, 150));
+        Logo.setName(""); // NOI18N
+        Logo.setPreferredSize(new java.awt.Dimension(350, 150));
+
+        DataButton.setText("See Live Data");
+        DataButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DataButtonActionPerformed(evt);
+            }
+        });
+
+        downloadButton.setText("Download Data");
+        downloadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
+        homePanel.setLayout(homePanelLayout);
+        homePanelLayout.setHorizontalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(homePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addComponent(DataButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(downloadButton)
+                        .addGap(355, 355, 355)
+                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BuyButton)
+                            .addComponent(SellButton)))
+                    .addGroup(homePanelLayout.createSequentialGroup()
+                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(214, 214, 214)
+                        .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(103, Short.MAX_VALUE))
+        );
+        homePanelLayout.setVerticalGroup(
+            homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Status_label)
+                    .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                .addComponent(BuyButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(downloadButton)
+                    .addComponent(DataButton)
+                    .addComponent(SellButton))
+                .addGap(39, 39, 39))
+        );
+
+        mainPanel.add(homePanel, "card3");
+
+        javax.swing.GroupLayout dataPanelLayout = new javax.swing.GroupLayout(dataPanel);
+        dataPanel.setLayout(dataPanelLayout);
+        dataPanelLayout.setHorizontalGroup(
+            dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 798, Short.MAX_VALUE)
+        );
+        dataPanelLayout.setVerticalGroup(
+            dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 477, Short.MAX_VALUE)
+        );
+
+        mainPanel.add(dataPanel, "card2");
+
         FileMenu.setText("File");
+
+        connectMenuItem.setText("Connect to a Device");
+        connectMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                connectMenuItemActionPerformed(evt);
+            }
+        });
+        FileMenu.add(connectMenuItem);
 
         EditMenuItem.setText("Edit");
         FileMenu.add(EditMenuItem);
@@ -174,83 +230,18 @@ public class PRESS_hud extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(DataButton)
-                        .addGap(12, 12, 12)
-                        .addComponent(downloadButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SellButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(BuyButton)))
-                .addContainerGap())
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Status_label)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
-                .addComponent(BuyButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(downloadButton)
-                    .addComponent(SellButton)
-                    .addComponent(DataButton))
-                .addGap(30, 30, 30))
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void DataButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DataButtonMouseClicked
-
-        // Get ChartPanels from data and add them to a container panel
-        JPanel container = new JPanel();
-        container.setLayout(new BoxLayout(container, BoxLayout.PAGE_AXIS));
-        JPanel panel1 = processData.plotPower();
-        JFrame frame = new JFrame();;
-        JPanel panel2 = processData.plotPriceData();
-        
-        processData.analyizePriceData();
-        
-        // Add container to frame
-        container.add(panel1);
-        container.add(panel2);
-        frame.add(container);
-        frame.setSize(this.getSize());
-        frame.setVisible(true);
-    }//GEN-LAST:event_DataButtonMouseClicked
-
-    private void downloadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_downloadButtonMouseClicked
-
-        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state?", "Confirm",
-                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if(response == JOptionPane.YES_OPTION)
-        {
-            try {
-                processData.downloadData();
-            } catch (IOException ex) {
-                Logger.getLogger(PRESS_hud.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_downloadButtonMouseClicked
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
 
@@ -264,7 +255,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void AboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutMenuItemActionPerformed
 
-        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Alpha 0.8", "About", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Alpha 1.1", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AboutMenuItemActionPerformed
 
     private void BuyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyButtonActionPerformed
@@ -290,8 +281,60 @@ public class PRESS_hud extends javax.swing.JFrame {
     }//GEN-LAST:event_SellButtonActionPerformed
 
     private void DataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DataButtonActionPerformed
-        // TODO add your handling code here:
+        
+        // Get ChartPanels from data and add them to a container panel
+        //JFrame frame = new JFrame();;
+        //JPanel container = new JPanel();
+        dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.PAGE_AXIS));
+        JPanel panel1 = processData.plotPower();
+        JPanel panel2 = processData.plotPriceData();
+        
+        // Button to return to home 'page'
+        // Check out this cool lamda expression!
+        JButton homeButton = new JButton();
+        homeButton.setText("Back to Home");
+        homeButton.addActionListener((ActionEvent e) -> {
+            CardLayout cL = (CardLayout) mainPanel.getLayout();
+            cL.show(mainPanel, "card3");
+            
+            dataPanel.removeAll();
+            dataPanel.repaint();
+            homePanel.repaint();
+        });
+        
+        processData.analyizePriceData();
+        
+        Dimension D = this.getSize();
+        D.setSize(D.getWidth()/2, D.getHeight()/2);
+        
+        panel1.setPreferredSize(D);
+        panel2.setPreferredSize(D);
+
+        // Add container to a panel which is part of the card layout
+        dataPanel.add(homeButton);
+        dataPanel.add(panel1);
+        dataPanel.add(panel2);
+        CardLayout cL = (CardLayout) mainPanel.getLayout();
+        cL.show(mainPanel, "card2");
     }//GEN-LAST:event_DataButtonActionPerformed
+
+    private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
+        
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state?", "Confirm",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(response == JOptionPane.YES_OPTION)
+        {
+            try {
+                processData.downloadData();
+            } catch (IOException ex) {
+                Logger.getLogger(PRESS_hud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_downloadButtonActionPerformed
+
+    private void connectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_connectMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,11 +380,13 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JMenuBar MainMenuBar;
     private javax.swing.JButton SellButton;
     private javax.swing.JLabel Status_label;
+    private javax.swing.JMenuItem connectMenuItem;
+    private javax.swing.JPanel dataPanel;
     private javax.swing.JButton downloadButton;
     private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel homePanel;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JPanel mainPanel;
     // End of variables declaration//GEN-END:variables
 }

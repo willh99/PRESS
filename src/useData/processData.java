@@ -53,7 +53,7 @@ public class processData {
         JFreeChart chart = ChartFactory.createXYLineChart ("XYLine Chart using JFreeChart", "X", "Y",
                 xyData, PlotOrientation.VERTICAL, true, true, false);
         ChartPanel chPanel = new ChartPanel(chart);
-        chPanel.setPreferredSize(new Dimension(300,300));
+        //chPanel.setPreferredSize(new Dimension(100,100));
         return chPanel;
     }
     
@@ -66,14 +66,14 @@ public class processData {
             series.add(i, priceData.get(i).getPrice());
         }
         
+        // Add the series to a data set, add the dataset to a chart,
+        // and then add the chart to a ChartPanel
         XYDataset xyData = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart ("NYISO LBMP", "Time", "$/MWH",
                 xyData, PlotOrientation.VERTICAL, true, true, false);
         ChartPanel chPanel =new ChartPanel(chart);
-        chPanel.setPreferredSize(new Dimension(300,300));
+        //chPanel.setPreferredSize(new Dimension(100,100));
         return chPanel;
-        //frame1.setSize(500,500);
-        //frame1.setVisible(true);
     }
     
     // downloads new file from the Internet to be used for data decision making

@@ -24,9 +24,9 @@ public class Main {
         PRESS_hud hud = new PRESS_hud();
         hud.setVisible(true);
         
-        //InetAddress host = InetAddress.getByName("127.0.0.1");
-        //ClientConnect Client = new ClientConnect(host, 5555);
-        //Client.chat();
+        InetAddress host = InetAddress.getByName("127.0.0.1");
+        ClientConnect Client = new ClientConnect(host, 5555);
+        Client.chat();
     }
     
 }
