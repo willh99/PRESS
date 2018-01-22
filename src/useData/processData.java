@@ -5,7 +5,6 @@
  */
 package useData;
 
-import java.awt.Dimension;
 import java.io.*;
 import static java.lang.Thread.sleep;
 import java.net.MalformedURLException;
@@ -21,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -76,11 +74,13 @@ public class processData {
         return chPanel;
     }
     
-    // downloads new file from the Internet to be used for data decision making
+    // Downloads new file from the Internet to be used for data decision making
     public static void downloadData() throws IOException {
         
-        // TODO: make URL dynamic to pull new data every day
-        String dataSource = "http://mis.nyiso.com/public/csv/realtime/20171130realtime_zone.csv";
+        // Dynamically update the date in the URL of the newest data from the NYISO
+        Date d = new Date();
+        SimpleDateFormat dFormat = new SimpleDateFormat("yyyyMMdd");
+        String dataSource = "http://mis.nyiso.com/public/csv/realtime/" + dFormat.format(d) + "realtime_zone.csv";
         
         // Downloads a new .csv file from NYISO to be used for data processing
         BufferedInputStream in = null;
@@ -117,8 +117,8 @@ public class processData {
                 StandardCharsets.US_ASCII)){
             // String used to read lines. Read first line here
             // Note: header line is skipped as it does not hold data
+            br.readLine();
             String line = br.readLine();
-            line = br.readLine();
             
             
             while(line != null){
@@ -219,6 +219,7 @@ class dataPoint {
         return price;
     }
 
+    @Override
     public String toString(){
         return "Data Point[ timeStamp: "+timeStamp+" name: "+name+" price: "+price+"$/MWH ]";
     }

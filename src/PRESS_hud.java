@@ -245,6 +245,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
 
+        // Exits the program
         int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like exit?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
@@ -255,6 +256,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void AboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutMenuItemActionPerformed
 
+        // Just some info about the project
         JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Alpha 1.1", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AboutMenuItemActionPerformed
 
@@ -361,6 +363,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new PRESS_hud().setVisible(true);
             }

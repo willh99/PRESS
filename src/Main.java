@@ -2,6 +2,7 @@
 import java.io.IOException;
 import java.net.InetAddress;
 import useData.ClientConnect;
+import useData.Scheduler;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,9 +25,11 @@ public class Main {
         PRESS_hud hud = new PRESS_hud();
         hud.setVisible(true);
         
-        InetAddress host = InetAddress.getByName("127.0.0.1");
-        ClientConnect Client = new ClientConnect(host, 5555);
-        Client.chat();
+        //InetAddress host = InetAddress.getByName("127.0.0.1");
+        //ClientConnect Client = new ClientConnect(host, 5555);
+        //Client.chat();
+        
+        Scheduler.testTiming();
     }
     
 }
