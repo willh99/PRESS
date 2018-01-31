@@ -124,9 +124,12 @@ public class processData {
             while(line != null){
                 // Array of values held in .csv file
                 String[] attributes = line.split((","));
-                for(int i=0; i<attributes.length;i++){
-                    attributes[i] = attributes[i].substring(1, attributes[i].length()-1);
-                }
+                
+                // Get rid of extra " around time and location
+                // Note: this may have to change depending on the data format
+                attributes[0] = attributes[0].substring(1, attributes[0].length()-1);    
+                attributes[1] = attributes[1].substring(1, attributes[1].length()-1);
+                
                 Date d = dateFormat.parse(attributes[0]);
                 String name = attributes[1];
                 double data = Double.parseDouble(attributes[3]);

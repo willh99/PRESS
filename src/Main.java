@@ -29,7 +29,7 @@ public class Main {
         //ClientConnect Client = new ClientConnect(host, 5555);
         //Client.chat();
         
-        Scheduler.testTiming();
+        //Scheduler.testTiming();
     }
     
 }
