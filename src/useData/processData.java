@@ -160,7 +160,7 @@ public class processData {
         // Retrieve List of dataPoint's (see below) holding relevant data
         List<dataPoint> dataList = readPriceData("TodaysData.csv");
         double max=0, min=1000;
-        boolean buy =  false;
+        boolean buy=false, sell=false;
         //LocalDateTime localTime;
         
         // Find maximum and minimal prices
@@ -181,11 +181,13 @@ public class processData {
         for(int i=0; i<dataList.size(); i++){
             if(dataList.get(i).getPrice() > max && buy){
                 buy = false;
-                parseJSON.createStatusJSON(buy);
+                sell = true;
+                parseJSON.createStatusJSON(buy, sell, "Algorithmic");
             }
-            else if(dataList.get(i).getPrice() < min && !buy){
+            else if(dataList.get(i).getPrice() < min && sell){
                 buy = true;
-                parseJSON.createStatusJSON(buy);
+                sell = false;
+                parseJSON.createStatusJSON(buy, sell, "Algorithmic");
             }
             try {
                 sleep(1);

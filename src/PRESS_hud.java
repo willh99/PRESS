@@ -33,9 +33,9 @@ public class PRESS_hud extends javax.swing.JFrame {
         
         Dimension D = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(D.width/2, D.height/2 );
-        mainPanel.setSize(this.getContentPane().getSize());
-        dataPanel.setSize(mainPanel.getSize());
-        homePanel.setSize(mainPanel.getSize());
+        //mainPanel.setSize(this.getContentPane().getSize());
+        //dataPanel.setSize(mainPanel.getSize());
+        //homePanel.setSize(mainPanel.getSize());
     }
 
     /**
@@ -57,6 +57,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         Logo = new javax.swing.JLabel();
         DataButton = new javax.swing.JButton();
         downloadButton = new javax.swing.JButton();
+        haltButton = new javax.swing.JButton();
         dataPanel = new javax.swing.JPanel();
         MainMenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
@@ -123,6 +124,13 @@ public class PRESS_hud extends javax.swing.JFrame {
             }
         });
 
+        haltButton.setText("Turn Off Battery");
+        haltButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                haltButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
         homePanelLayout.setHorizontalGroup(
@@ -134,16 +142,17 @@ public class PRESS_hud extends javax.swing.JFrame {
                         .addComponent(DataButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(downloadButton)
-                        .addGap(355, 355, 355)
-                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BuyButton)
-                            .addComponent(SellButton)))
+                        .addGap(315, 315, 315)
+                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(SellButton)
+                            .addComponent(haltButton)
+                            .addComponent(BuyButton)))
                     .addGroup(homePanelLayout.createSequentialGroup()
                         .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(214, 214, 214)
                         .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         homePanelLayout.setVerticalGroup(
             homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,13 +163,15 @@ public class PRESS_hud extends javax.swing.JFrame {
                     .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
                 .addComponent(BuyButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SellButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(downloadButton)
                     .addComponent(DataButton)
-                    .addComponent(SellButton))
+                    .addComponent(haltButton))
                 .addGap(39, 39, 39))
         );
 
@@ -253,29 +264,28 @@ public class PRESS_hud extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void AboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutMenuItemActionPerformed
-
         // Just some info about the project
-        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Alpha 1.1", "About", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Alpha 1.4", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AboutMenuItemActionPerformed
 
     private void BuyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuyButtonActionPerformed
-        
-        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state?", "Confirm",
+        // Change status JSON to Sell (Buy=false, Sell=true)
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Sell\"?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
-            parseJSON.createStatusJSON(true);
+            parseJSON.createStatusJSON(true, false, "ManualOverride");
             Status_label.setText("System Status: Buy");
         }
     }//GEN-LAST:event_BuyButtonActionPerformed
 
     private void SellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SellButtonActionPerformed
-        
-        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state?", "Confirm",
+        // Change status JSON to Buy (Buy=true, Sell=false)
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Buy\"?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
-            parseJSON.createStatusJSON(false);
+            parseJSON.createStatusJSON(false, true, "ManualOverride");
             Status_label.setText("System Status: Sell");
         }
     }//GEN-LAST:event_SellButtonActionPerformed
@@ -319,8 +329,8 @@ public class PRESS_hud extends javax.swing.JFrame {
     }//GEN-LAST:event_DataButtonActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
-        
-        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state?", "Confirm",
+        // Button to redownload data from the internet
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to redownload today's data?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
@@ -335,6 +345,17 @@ public class PRESS_hud extends javax.swing.JFrame {
     private void connectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_connectMenuItemActionPerformed
+
+    private void haltButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_haltButtonActionPerformed
+        // Set status JSON to halt (Sell=false Buy=false)
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Halt\"?", "Confirm",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(response == JOptionPane.YES_OPTION)
+        {
+            parseJSON.createStatusJSON(false, false, "ManualOverride");
+            Status_label.setText("System Status: Halt");
+        }
+    }//GEN-LAST:event_haltButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,6 +406,7 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JPanel dataPanel;
     private javax.swing.JButton downloadButton;
     private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JButton haltButton;
     private javax.swing.JPanel homePanel;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;

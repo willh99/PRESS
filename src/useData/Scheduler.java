@@ -22,7 +22,7 @@ public class Scheduler {
     
     private static Timer timer;
     
-    public static void drawData()
+    public static void fetchData()
     {
         // Schedule timer to draw price data every day at midnight
         Calendar today = Calendar.getInstance();
@@ -31,7 +31,7 @@ public class Scheduler {
         today.set(Calendar.SECOND, 0);
         
         Timer t1 = new Timer();
-        t1.schedule(new dataDraw(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+        t1.schedule(new dataFetch(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
     
     public static void testTiming()
@@ -56,7 +56,7 @@ class MyTimerTask extends TimerTask {
     }
 }
 
-class dataDraw extends TimerTask {
+class dataFetch extends TimerTask {
 
     @Override
     public void run() 
@@ -64,7 +64,7 @@ class dataDraw extends TimerTask {
         try {
             processData.downloadData();
         } catch (IOException ex) {
-            Logger.getLogger(dataDraw.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(dataFetch.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

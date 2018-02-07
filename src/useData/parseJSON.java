@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -28,16 +30,28 @@ import org.json.simple.parser.ParseException;
 
 public class parseJSON {
 
-  public static void createStatusJSON(boolean Buy){
+  public static void createStatusJSON(boolean Buy, boolean Sell, String type){
     
     // Create JSON object
     JSONObject obj = new JSONObject();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss z");
+    Date d = new Date();
     
-    if(Buy){
+    
+    // Put timestamp into status JSON
+    obj.put("Timestamp", dateFormat.format(d));
+    
+    if(Buy  && !Sell){
         obj.put("Buy", true);
+        obj.put("Sell", false);
+    }
+    else if(!Buy && Sell){
+        obj.put("Buy", false);
+        obj.put("Sell", true);
     }
     else{
         obj.put("Buy", false);
+        obj.put("Sell", false);
     }
     
     try (FileWriter file = new FileWriter("JSON_Objects/test.json")) {
