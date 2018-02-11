@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Tasks.dataFetch;
 
 /**
  *
@@ -53,18 +54,5 @@ class MyTimerTask extends TimerTask {
     public void run() {
         Date d = new Date();
         System.out.println("Time is currently: " + d.toString());
-    }
-}
-
-class dataFetch extends TimerTask {
-
-    @Override
-    public void run() 
-    {
-        try {
-            processData.downloadData();
-        } catch (IOException ex) {
-            Logger.getLogger(dataFetch.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }
