@@ -5,7 +5,12 @@
  */
 package Tasks;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import useData.ClientConnect;
 
 /**
  *
@@ -13,9 +18,17 @@ import java.util.TimerTask;
  */
 public class monitorStatus extends TimerTask {
 
+    ClientConnect client;
+    InetAddress host;
+    
+    private void setupClient(InetAddress h, int port)
+    {
+        
+    }
+    
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
     
 }

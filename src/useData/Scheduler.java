@@ -35,6 +35,12 @@ public class Scheduler {
         t1.schedule(new dataFetch(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
     
+    public static void getStatus()
+    {
+        // Schedule timer to try and fetch sensor data from server every minute
+        Timer time = new Timer();
+    }
+    
     public static void testTiming()
     {
         Date firstTime = new Date();

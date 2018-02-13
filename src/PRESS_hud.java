@@ -344,6 +344,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void connectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectMenuItemActionPerformed
         // TODO add your handling code here:
+        parseJSON.readJSONArray("v_log.json");
     }//GEN-LAST:event_connectMenuItemActionPerformed
 
     private void haltButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_haltButtonActionPerformed

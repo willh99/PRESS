@@ -32,7 +32,8 @@ import org.jfree.data.xy.*;
 
 public class processData {
 
-    public static JPanel plotPower(){
+    public static JPanel plotPower()
+    {
         int[][] XY = new int[10][2];
         for(int i=0; i<XY.length; i++){
             for(int j=0; j<2; j++){
@@ -55,8 +56,8 @@ public class processData {
         return chPanel;
     }
     
-    public static JPanel plotPriceData() {
-        
+    public static JPanel plotPriceData() 
+    {
         List<dataPoint> priceData = readPriceData("TodaysData.csv");
         XYSeries series = new XYSeries("24h Power Pricing");
         
@@ -75,8 +76,8 @@ public class processData {
     }
     
     // Downloads new file from the Internet to be used for data decision making
-    public static void downloadData() throws IOException {
-        
+    public static void downloadData() throws IOException 
+    {
         // Dynamically update the date in the URL of the newest data from the NYISO
         Date d = new Date();
         SimpleDateFormat dFormat = new SimpleDateFormat("yyyyMMdd");
@@ -107,8 +108,8 @@ public class processData {
     }
     
     // Read data from a .csv file and return a List holding the relevent data
-    private static List<dataPoint> readPriceData(String filename) {
-        
+    private static List<dataPoint> readPriceData(String filename) 
+    {
         List<dataPoint> dataList = new ArrayList<>();
         Path pathToFile = Paths.get(filename);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -155,8 +156,8 @@ public class processData {
     
     // TODO: add fail-safes for instances where data is either not found
     //       of unable to be process
-    public static void analyizePriceData () {
-        
+    public static void analyizePriceData () 
+    {
         // Retrieve List of dataPoint's (see below) holding relevant data
         List<dataPoint> dataList = readPriceData("TodaysData.csv");
         double max=0, min=1000;
@@ -199,11 +200,11 @@ public class processData {
 }
 
 
+// Class to hold relevent information about a data point
+// Holds time of price data, name of associated region,
+// and the price at given the aforementioned parameters
 class dataPoint {
     
-    // Class to hold relevent information about a data point
-    // Holds time of price data, name of associated region,
-    // and the price at given the aforementioned parameters
     private final Date timeStamp;
     private final String name;
     private final double price;
