@@ -3,7 +3,6 @@ package useData;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import org.json.simple.JSONObject;
 import java.io.FileWriter;
