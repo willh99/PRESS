@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -106,14 +107,17 @@ public class parseJSON {
             e.printStackTrace();
         }
     }
-  
-    public static void readJSONArray (String filename) 
+    
+    // Parses a JSON Array from a JSON file. Uses include retreiving 
+    // multiple JSONs stored within a JSON array for voltage and temperature
+    public static Iterator readJSONArray (String filename) 
     {
+        Iterator i = null;
         File file;
         file = new File("JSON_Objects/" + filename);
         if(!file.exists()){
             System.out.println("File \"" +filename+ "\" does not exist. Aborting");
-            return;
+            return i;
         }
         
         JSONParser parser = new JSONParser();
@@ -125,26 +129,9 @@ public class parseJSON {
         }
     
         JSONArray Jarray = (JSONArray) fileOutput;
-        System.out.println(Jarray);
-    
-        /*try(BufferedReader br = Files.newBufferedReader(pathToFile,
-            StandardCharsets.US_ASCII)){
-
-            // String used to read lines. Read first line here
-            String line = br.readLine();
-            Object obj;
-
-            while(line != null){
-                obj = parser.parse(line);
-                Jarray.add((JSONObject) obj);
-                line = br.readLine();
-            }
-            //System.out.println(Jarray);
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        } catch (IOException | ParseException e){
-            e.printStackTrace();
-        }*/
+        i = Jarray.iterator();
+        
+        return i;
     }
 
     public static void readJSONObject(String filename){

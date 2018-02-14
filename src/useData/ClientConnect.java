@@ -10,12 +10,12 @@ package useData;
  *
  * @author will
  */
-import java.net.*;
 import java.io.*;
+import java.net.*;
 import java.util.Scanner;
 
-public class ClientConnect {
-
+public class ClientConnect
+{
     private InetAddress addr = null;
     private int port;
     private Socket socket = null;
@@ -76,7 +76,7 @@ public class ClientConnect {
     }
   
     // Connect a closed socket to a server
-    private void connectSocket() throws IOException
+    public void connectSocket() throws IOException
     {
         if(socket == null)
         {
@@ -105,16 +105,6 @@ public class ClientConnect {
             System.out.println("No address set");
         else if(port<=0)
             System.out.println("No port set");
-    }
-    
-    // Close a socket connection. This is needed for the server
-    // to understand the end of a file stream from the client
-    public void closeSocket() throws IOException
-    {
-        if(socket.isConnected())
-            socket.close();
-        else
-            System.out.println("Socket cannot be closed: Already Closed");
     }
     
     public void chat() throws IOException
@@ -238,9 +228,57 @@ public class ClientConnect {
                 }
                 dos.flush();
             }
-            closeSocket();
+            closeConnection();
             
         } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public void checkStatus()
+    {
+        try {
+            connectSocket();
+            if(socket == null)
+                return;
+            else if(socket.isClosed())
+                return;
+        } catch (IOException ex) {
+            System.out.println("Failed to connect to server");
+            System.out.println(ex.getMessage());
+            return;
+        }
+        
+        System.out.println("Requesting Status Update");
+        File path, file;
+        try {
+            // 'path' determines the parent directories of the file
+            // 'file' is the acutal name of the file
+            path = new File("JSON_Objects/");
+            file = new File(path, "home_status.json");
+            
+            // Create new file if it does not exist
+            // Then request the file from server
+            path.mkdirs();
+            if(!file.exists()){
+                file.createNewFile();
+                System.out.println("Created New File: " + file);
+            }
+            fos = new FileOutputStream(file);
+            send("REQUEST status.json");
+        
+            // Get content in bytes and write to a file
+            byte[] buffer = new byte[8192];
+            for(int counter=0; (counter = din.read(buffer, 0, buffer.length)) >= 0;)
+            {
+                    fos.write(buffer, 0, counter);
+            }
+            fos.flush();
+            fos.close();
+            closeConnection();
+            
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

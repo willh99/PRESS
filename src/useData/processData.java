@@ -24,6 +24,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.*;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -34,16 +35,14 @@ public class processData {
 
     public static JPanel plotPower()
     {
-        int[][] XY = new int[10][2];
-        for(int i=0; i<XY.length; i++){
-            for(int j=0; j<2; j++){
-                XY[i][j] = i;
-            }
-        }
+        Iterator Jarray = parseJSON.readJSONArray("v_log.json");
         XYSeries series = new XYSeries("24h Power");
-
-        for(int j=0; j<XY.length; j++){
-                series.add(XY[j][0], XY[j][1]);
+        int i=0;
+        
+        while(Jarray.hasNext()){
+            JSONObject obj = (JSONObject) Jarray.next();
+            series.add(i, (double) obj.get("Voltage"));
+            i++;
         }
 
         // Add the series to a data set, add the dataset to a chart,

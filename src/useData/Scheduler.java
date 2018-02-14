@@ -5,7 +5,6 @@
  */
 package useData;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
@@ -14,6 +13,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Tasks.dataFetch;
+import Tasks.monitorStatus;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -38,7 +40,13 @@ public class Scheduler {
     public static void getStatus()
     {
         // Schedule timer to try and fetch sensor data from server every minute
-        Timer time = new Timer();
+        Timer mytimer = new Timer();
+        try {
+            InetAddress host = InetAddress.getByName("127.0.0.1");
+            mytimer.scheduleAtFixedRate(new monitorStatus(host, 5555), 0, 5000);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void testTiming()

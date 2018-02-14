@@ -1,7 +1,4 @@
 
-import java.io.IOException;
-import java.net.InetAddress;
-import useData.ClientConnect;
 import useData.Scheduler;
 
 /*
@@ -20,16 +17,16 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-        // Start by creating the UI
+    public static void main(String[] args) {
+        // Start by creating the UI //
         PRESS_hud hud = new PRESS_hud();
         hud.setVisible(true);
         
-        //InetAddress host = InetAddress.getByName("127.0.0.1");
-        //ClientConnect Client = new ClientConnect(host, 5555);
-        //Client.chat();
-        
+        /* Next initialize the scheduler functions
+         * i.e. get sensor data from server & price data from the Internet
+         */
         //Scheduler.testTiming();
+        Scheduler.getStatus();
     }
     
 }

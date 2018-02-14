@@ -5,8 +5,8 @@
  */
 package Tasks;
 
+import static java.lang.Thread.sleep;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,16 +19,20 @@ import useData.ClientConnect;
 public class monitorStatus extends TimerTask {
 
     ClientConnect client;
-    InetAddress host;
     
-    private void setupClient(InetAddress h, int port)
-    {
-        
+    public monitorStatus(InetAddress host, int port){
+        client = new ClientConnect(host, port);
     }
     
     @Override
     public void run() {
-       
+        try {
+            client.getFile("v_log.json");
+            sleep(5);
+            client.checkStatus();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(monitorStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
