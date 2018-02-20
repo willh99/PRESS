@@ -43,7 +43,7 @@ public class Scheduler {
         Timer mytimer = new Timer();
         try {
             InetAddress host = InetAddress.getByName("127.0.0.1");
-            mytimer.scheduleAtFixedRate(new monitorStatus(host, 5555), 0, 5000);
+            mytimer.scheduleAtFixedRate(new monitorStatus(host, 5555), 0, 30000);
         } catch (UnknownHostException ex) {
             Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
         }

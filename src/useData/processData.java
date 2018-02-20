@@ -48,7 +48,7 @@ public class processData {
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
         XYDataset xyData = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart ("XYLine Chart using JFreeChart", "X", "Y",
+        JFreeChart chart = ChartFactory.createXYLineChart ("24H Voltage Readings", "Time", "Volts",
                 xyData, PlotOrientation.VERTICAL, true, true, false);
         ChartPanel chPanel = new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
