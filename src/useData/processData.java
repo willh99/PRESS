@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -195,6 +196,62 @@ public class processData {
                 Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public static void populateTable(String filename, JTable table)
+    {
+        File file =  new File(filename);
+        DefaultTableModel model =  (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
+        if(!file.exists()){
+            model.addColumn("File \'" + filename + "\' Not Found");
+            return;
+        }
+        
+        try(BufferedReader br = new BufferedReader(new FileReader(file))){
+            // String used to read lines. Read first line here
+            // Note: header line forms the column identifiers
+            String line = br.readLine();
+            String[] attributes = line.split((","));
+            model.setColumnIdentifiers(attributes);
+
+            Object[] tableLines = br.lines().toArray();
+            for (Object tableLine : tableLines) {
+                line = tableLine.toString().trim();
+                attributes = line.split((","));
+                if(attributes[1].equals("\"N.Y.C.\""))
+                    model.addRow(attributes);
+            }  
+        } catch (IOException e){
+            e.printStackTrace();
+        }  
+    }
+    
+    public static void populateTableWithJSON(String filename, JTable table)
+    {
+        File file =  new File("JSON_Objects/" + filename);
+        DefaultTableModel model =  (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+        
+        if(!file.exists()){
+            model.addColumn("File \'JSON_Objects/" + filename + "\' Not Found");
+            return;
+        }
+        
+        Iterator Jarray = parseJSON.readJSONArray(filename);
+        if(filename.equals("v_log.json"))
+        {
+            String[] tableLine = {"Timestamp", "Voltage"};
+            model.setColumnIdentifiers(tableLine);
+            
+            while(Jarray.hasNext()){
+                JSONObject obj = (JSONObject) Jarray.next();
+                Object[] line = {obj.get("Timestamp"), obj.get("Voltage")};
+                model.addRow(line);
+            }
+        }
+     
     }
 }
 
