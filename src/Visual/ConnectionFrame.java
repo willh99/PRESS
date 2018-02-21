@@ -16,9 +16,14 @@
  */
 package Visual;
 
+import useData.Globals;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import useData.Scheduler;
+
 /**
  *
- * @author willy
+ * @author will
  */
 public class ConnectionFrame extends javax.swing.JFrame {
 
@@ -40,18 +45,18 @@ public class ConnectionFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         mainPanel = new javax.swing.JPanel();
         hostComboBox = new javax.swing.JComboBox<>();
         titleLabel = new javax.swing.JLabel();
         hostComboLabel = new javax.swing.JLabel();
         portComboLabel = new javax.swing.JLabel();
-        portComboBox = new javax.swing.JComboBox<>();
         hostTextField = new javax.swing.JTextField();
         hostTextLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        addBtn = new javax.swing.JButton();
+        applyBtn = new javax.swing.JButton();
+        currentValueLabel = new javax.swing.JLabel();
+        portSpinner = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -62,47 +67,60 @@ public class ConnectionFrame extends javax.swing.JFrame {
     titleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
     titleLabel.setText("Choose Your Host and Port");
 
-    hostComboLabel.setText("Save Hosts");
+    hostComboLabel.setText("Saved Hosts");
 
-    portComboLabel.setText("Saved Ports");
+    portComboLabel.setText("Port (only change if necessary)");
 
-    portComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
-        new String[] { "5555" }));
+    hostTextLabel.setText("Enter a New Host:");
 
-hostTextLabel.setText("Enter a New Host:");
+    addBtn.setText("Add New");
+    addBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            addBtnActionPerformed(evt);
+        }
+    });
 
-jLabel1.setText("Enter a New Port:");
+    applyBtn.setText("Apply Settings");
+    applyBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            applyBtnActionPerformed(evt);
+        }
+    });
 
-jButton1.setText("Add New");
+    currentValueLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+    currentValueLabel.setText("Current host and port: ( "
+        + Globals.getHostName().getHostAddress() + " , "
+        + Globals.getHostPort() + " )"
+    );
 
-jButton2.setText("Apply Settings");
+    portSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 65000, 1));
+    portSpinner.setValue(Globals.getHostPort());
 
-javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-mainPanel.setLayout(mainPanelLayout);
-mainPanelLayout.setHorizontalGroup(
-    mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-    .addGroup(mainPanelLayout.createSequentialGroup()
-        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(titleLabel))
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(hostComboBox, 0, 153, Short.MAX_VALUE)
-                        .addComponent(hostComboLabel)
-                        .addComponent(portComboLabel)
-                        .addComponent(portComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+    javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+    mainPanel.setLayout(mainPanelLayout);
+    mainPanelLayout.setHorizontalGroup(
+        mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(mainPanelLayout.createSequentialGroup()
+            .addGap(18, 18, 18)
+            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(currentValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addBtn))
+                .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addComponent(portSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addGap(80, 80, 80)
+                    .addComponent(applyBtn))
+                .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(hostTextLabel)
-                        .addComponent(hostTextField)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))))
-        .addContainerGap(43, Short.MAX_VALUE))
+                        .addComponent(hostComboLabel)
+                        .addComponent(titleLabel)
+                        .addComponent(hostComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(portComboLabel))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addContainerGap())
     );
     mainPanelLayout.setVerticalGroup(
         mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,19 +135,17 @@ mainPanelLayout.setHorizontalGroup(
             .addComponent(portComboLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(portComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton2))
+                .addComponent(applyBtn)
+                .addComponent(portSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(18, 18, 18)
             .addComponent(hostTextLabel)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(jLabel1)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton1))
-            .addContainerGap(67, Short.MAX_VALUE))
+                .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addBtn))
+            .addGap(18, 18, 18)
+            .addComponent(currentValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -149,6 +165,52 @@ mainPanelLayout.setHorizontalGroup(
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void applyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyBtnActionPerformed
+        // Sets new host and port name in the Globals class
+        Globals.setHostName(hostComboBox.getSelectedItem().toString());
+        Globals.setHostPort((int) portSpinner.getValue());
+        currentValueLabel.setText("Current host and port: ( "
+                                + Globals.getHostName().getHostAddress() + " , "
+                                + Globals.getHostPort() + " )");
+        Scheduler.updateTask("STATUS");
+    }//GEN-LAST:event_applyBtnActionPerformed
+
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        // Adds a new IP address string to the hostComboBox
+        // Host IP need to be applied (above) before being set in Globals
+        String text = hostTextField.getText();
+        if(validIP(text)){
+            if(((DefaultComboBoxModel)hostComboBox.getModel()).getIndexOf(text) == -1) {
+                hostComboBox.addItem(text);
+            }
+        }
+            
+    }//GEN-LAST:event_addBtnActionPerformed
+
+    
+    public static boolean validIP (String ip) {
+        try {
+            if ( ip == null || ip.isEmpty() ) {
+                return false;
+            }
+
+            String[] parts = ip.split( "\\." );
+            if ( parts.length != 4 ) {
+                return false;
+            }
+
+            for ( String s : parts ) {
+                int i = Integer.parseInt( s );
+                if ( (i < 0) || (i > 255) ) {
+                    return false;
+                }
+            }
+            return !ip.endsWith(".");
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -187,17 +249,17 @@ mainPanelLayout.setHorizontalGroup(
 
     private PRESS_hud hud;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addBtn;
+    private javax.swing.JButton applyBtn;
+    private javax.swing.JLabel currentValueLabel;
     private javax.swing.JComboBox<String> hostComboBox;
     private javax.swing.JLabel hostComboLabel;
     private javax.swing.JTextField hostTextField;
     private javax.swing.JLabel hostTextLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JComboBox<String> portComboBox;
     private javax.swing.JLabel portComboLabel;
+    private javax.swing.JSpinner portSpinner;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

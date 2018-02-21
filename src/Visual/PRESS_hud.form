@@ -162,10 +162,7 @@
                               <Component id="sellButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="dataButton" max="32767" attributes="0"/>
-                                  <Component id="graphButton" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="dataButton" min="-2" pref="113" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
@@ -197,10 +194,7 @@
                       <EmptySpace pref="109" max="32767" attributes="0"/>
                       <Component id="sellButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="buyButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="graphButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="buyButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="haltButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -285,14 +279,6 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="graphButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Graphical Data"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="graphButtonActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="downloadButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Download Data"/>
@@ -311,33 +297,13 @@
             </Component>
             <Component class="javax.swing.JButton" name="dataButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Tabular Data"/>
+                <Property name="text" type="java.lang.String" value="See Data"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dataButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="graphPanel">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                <MatteColorBorder/>
-              </Border>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="graphPanel.setBackground(new Color(200,100,100));"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
-          </AuxValues>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-              <CardConstraints cardName="card2"/>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
         </Container>
         <Container class="javax.swing.JPanel" name="dataPanel">
           <AuxValues>
