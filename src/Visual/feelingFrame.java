@@ -1,5 +1,8 @@
 package Visual;
 
+import java.awt.Color;
+import javax.swing.JPanel;
+
 /*
  * Copyright (C) 2018 willy
  *
@@ -25,9 +28,13 @@ public class feelingFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form feelingFrame
+     * @param h
      */
-    public feelingFrame() {
+    public feelingFrame(PRESS_hud h) {
         initComponents();
+        hud = h;
+        demoPanel1.setBackground(new Color(50,50,50));
+        demoPanel2.setBackground(new Color(200,100,100));
     }
 
     /**
@@ -39,21 +46,160 @@ public class feelingFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        feelingPanel = new javax.swing.JPanel();
+        titleLabel = new javax.swing.JLabel();
+        colorsComboBox = new javax.swing.JComboBox<>();
+        applyButton = new javax.swing.JButton();
+        demoPanel1 = new javax.swing.JPanel();
+        demoPanel2 = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setLocation(new java.awt.Point(600, 200));
+        setResizable(false);
+
+        titleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        titleLabel.setText("Choose Your Look and Feel");
+
+        colorsComboBox.setModel(
+            new javax.swing.DefaultComboBoxModel<>(
+                new String[] { "Red & Black", "Grey & Black",
+                    "Yellow & Blue", "Orange & White" }));
+        colorsComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                colorsComboBoxItemStateChanged(evt);
+            }
+        });
+
+        applyButton.setText("Apply Color");
+        applyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout demoPanel2Layout = new javax.swing.GroupLayout(demoPanel2);
+        demoPanel2.setLayout(demoPanel2Layout);
+        demoPanel2Layout.setHorizontalGroup(
+            demoPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 242, Short.MAX_VALUE)
+        );
+        demoPanel2Layout.setVerticalGroup(
+            demoPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 184, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout demoPanel1Layout = new javax.swing.GroupLayout(demoPanel1);
+        demoPanel1.setLayout(demoPanel1Layout);
+        demoPanel1Layout.setHorizontalGroup(
+            demoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(demoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(demoPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        demoPanel1Layout.setVerticalGroup(
+            demoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 196, Short.MAX_VALUE)
+            .addGroup(demoPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(demoPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(demoPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+
+        javax.swing.GroupLayout feelingPanelLayout = new javax.swing.GroupLayout(feelingPanel);
+        feelingPanel.setLayout(feelingPanelLayout);
+        feelingPanelLayout.setHorizontalGroup(
+            feelingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, feelingPanelLayout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
+                .addGroup(feelingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(demoPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(applyButton, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(colorsComboBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(34, 34, 34))
+        );
+        feelingPanelLayout.setVerticalGroup(
+            feelingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, feelingPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(colorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(demoPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(applyButton)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(feelingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(feelingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void colorsComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_colorsComboBoxItemStateChanged
+        //Change color of the demo panels if the ComboBox state is changed
+        if(colorsComboBox.getSelectedItem().equals("Red & Black")){
+            demoPanel1.setBackground(new Color(50,50,50));
+            demoPanel2.setBackground(new Color(200,100,100));
+        }
+        else if (colorsComboBox.getSelectedItem().equals("Grey & Black")){
+            demoPanel1.setBackground(new Color(50,50,50));
+            demoPanel2.setBackground(new Color(102,102,102));
+        }
+        else if (colorsComboBox.getSelectedItem().equals("Yellow & Blue")){
+            demoPanel1.setBackground(new Color(102,102,255));
+            demoPanel2.setBackground(new Color(255,255,102));
+        }
+        else if (colorsComboBox.getSelectedItem().equals("Orange & White")){
+            demoPanel1.setBackground(new Color(255,255,255));
+            demoPanel2.setBackground(new Color(255,153,102));
+        }
+    }//GEN-LAST:event_colorsComboBoxItemStateChanged
+
+    private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
+        // Apply currently selected color to the main frame
+        if(colorsComboBox.getSelectedItem().equals("Red & Black")){
+            hud.getContentPane().setBackground(new Color(50,50,50));
+            hud.homePanel.setBackground(new Color(200,100,100));
+            hud.graphPanel.setBackground(new Color(200,100,100));
+            hud.dataPanel.setBackground(new Color(200,100,100));
+        }
+        else if (colorsComboBox.getSelectedItem().equals("Grey & Black")){
+            hud.getContentPane().setBackground(new Color(50,50,50));
+            hud.homePanel.setBackground(new Color(102,102,102));
+            hud.graphPanel.setBackground(new Color(102,102,102));
+            hud.dataPanel.setBackground(new Color(102,102,102));
+        }
+        else if (colorsComboBox.getSelectedItem().equals("Yellow & Blue")){
+            hud.getContentPane().setBackground(new Color(102,102,255));
+            hud.homePanel.setBackground(new Color(255,255,102));
+            hud.graphPanel.setBackground(new Color(255,255,102));
+            hud.dataPanel.setBackground(new Color(255,255,102));
+        }
+        else if (colorsComboBox.getSelectedItem().equals("Orange & White")){
+            hud.getContentPane().setBackground(new Color(255,255,255));
+            hud.homePanel.setBackground(new Color(255,153,102));
+            hud.graphPanel.setBackground(new Color(255,153,102));
+            hud.dataPanel.setBackground(new Color(255,153,102));
+        }
+    }//GEN-LAST:event_applyButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -85,11 +231,18 @@ public class feelingFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new feelingFrame().setVisible(true);
+                new feelingFrame(new PRESS_hud()).setVisible(true);
             }
         });
     }
 
+    private PRESS_hud hud;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton applyButton;
+    private javax.swing.JComboBox<String> colorsComboBox;
+    private javax.swing.JPanel demoPanel1;
+    private javax.swing.JPanel demoPanel2;
+    private javax.swing.JPanel feelingPanel;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

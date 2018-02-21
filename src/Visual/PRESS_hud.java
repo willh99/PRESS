@@ -3,7 +3,6 @@ package Visual;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +10,8 @@ import javax.swing.JButton;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import useData.ClientConnect;
+import useData.Globals;
 import useData.processData;
 
 /*
@@ -34,9 +35,6 @@ public class PRESS_hud extends javax.swing.JFrame {
         
         Dimension D = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(D.width/2, D.height/2 );
-        homePanel.setBackground(new Color(200,100,100));
-        graphPanel.setBackground(new Color(200,100,100));
-        dataPanel.setBackground(new Color(200,100,100));
     }
 
     /**
@@ -76,6 +74,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         exitMenuItem = new javax.swing.JMenuItem();
         settingsMenu = new javax.swing.JMenu();
         feelingMenuItem = new javax.swing.JMenuItem();
+        connectionMenuItem = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
         AboutMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
@@ -89,6 +88,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         mainPanel.setLayout(new java.awt.CardLayout());
 
         homePanel.setForeground(new java.awt.Color(204, 204, 204));
+        homePanel.setBackground(new Color(200,100,100));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -129,7 +129,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         Logo.setName(""); // NOI18N
         Logo.setPreferredSize(new java.awt.Dimension(350, 150));
 
-        graphButton.setText("See Live Data");
+        graphButton.setText("Graphical Data");
         graphButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 graphButtonActionPerformed(evt);
@@ -150,7 +150,7 @@ public class PRESS_hud extends javax.swing.JFrame {
             }
         });
 
-        dataButton.setText("See Daily Prices");
+        dataButton.setText("Tabular Data");
         dataButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dataButtonActionPerformed(evt);
@@ -214,8 +214,11 @@ public class PRESS_hud extends javax.swing.JFrame {
         mainPanel.add(homePanel, "card3");
 
         graphPanel.setBorder(new javax.swing.border.MatteBorder(null));
+        graphPanel.setBackground(new Color(200,100,100));
         graphPanel.setLayout(new java.awt.GridBagLayout());
         mainPanel.add(graphPanel, "card2");
+
+        dataPanel.setBackground(new Color(200,100,100));
 
         homeButton.setText("Back to Home");
         homeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -308,7 +311,15 @@ public class PRESS_hud extends javax.swing.JFrame {
     settingsMenu.setText("Settings");
 
     feelingMenuItem.setText("Look & Feel");
+    feelingMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            feelingMenuItemActionPerformed(evt);
+        }
+    });
     settingsMenu.add(feelingMenuItem);
+
+    connectionMenuItem.setText("Edit Connection Settings");
+    settingsMenu.add(connectionMenuItem);
 
     mainMenuBar.add(settingsMenu);
 
@@ -385,14 +396,14 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(false, true, "ManualOverride");
             Status_label.setText("System Status: Sell");
+            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort());
+            c.sendFile("status.json");
         }
     }//GEN-LAST:event_sellButtonActionPerformed
 
     private void graphButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_graphButtonActionPerformed
         
         // Get ChartPanels from data and add them to a container panel
-        //JFrame frame = new JFrame();;
-        //JPanel container = new JPanel();
         graphPanel.setLayout(new GridBagLayout());
         graphPanel.setPreferredSize(mainPanel.getSize());
         GridBagConstraints c =  new GridBagConstraints();
@@ -401,9 +412,9 @@ public class PRESS_hud extends javax.swing.JFrame {
         
         // Button to return to home 'page'
         // Check out this cool lamda expression!
-        JButton homeButton = new JButton();
-        homeButton.setText("Back to Home");
-        homeButton.addActionListener((ActionEvent e) -> {
+        JButton homeBtn = new JButton();
+        homeBtn.setText("Back to Home");
+        homeBtn.addActionListener((ActionEvent e) -> {
             CardLayout cL = (CardLayout) mainPanel.getLayout();
             cL.show(mainPanel, "card3");
             
@@ -411,19 +422,12 @@ public class PRESS_hud extends javax.swing.JFrame {
             graphPanel.repaint();
             homePanel.repaint();
         });
-        
         processData.analyizePriceData();
         
-        /*Dimension D = this.getSize();
-        D.setSize(D.getWidth()/2, D.getHeight()/2);
-        
-        panel1.setPreferredSize(D);
-        panel2.setPreferredSize(D);*/
-
         // Add container to a panel which is part of the card layout
         c.gridx = 2;
         c.gridy = 2;
-        graphPanel.add(homeButton, c);
+        graphPanel.add(homeBtn, c);
         
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.fill = GridBagConstraints.BOTH;
@@ -433,6 +437,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         c.gridy = 0;
         c.gridwidth = 2;
         graphPanel.add(panel1, c);
+        
         c.gridx = 0;
         c.gridy = 1;
         graphPanel.add(panel2, c);
@@ -486,6 +491,12 @@ public class PRESS_hud extends javax.swing.JFrame {
         cL.show(mainPanel, "card3");
     }//GEN-LAST:event_homeButtonActionPerformed
 
+    private void feelingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feelingMenuItemActionPerformed
+        // TODO add your handling code here:
+        feelingFrame frame = new feelingFrame(this);
+        frame.setVisible(true);
+    }//GEN-LAST:event_feelingMenuItemActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -527,8 +538,9 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JMenu aboutMenu;
     private javax.swing.JButton buyButton;
     private javax.swing.JMenuItem connectMenuItem;
+    private javax.swing.JMenuItem connectionMenuItem;
     private javax.swing.JButton dataButton;
-    private javax.swing.JPanel dataPanel;
+    protected javax.swing.JPanel dataPanel;
     private javax.swing.JTabbedPane dataTabbedPane;
     private javax.swing.JTable dataTable;
     private javax.swing.JButton downloadButton;
@@ -536,11 +548,11 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JMenuItem feelingMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton graphButton;
-    private javax.swing.JPanel graphPanel;
+    protected javax.swing.JPanel graphPanel;
     private javax.swing.JButton haltButton;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton homeButton;
-    private javax.swing.JPanel homePanel;
+    protected javax.swing.JPanel homePanel;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JMenuBar mainMenuBar;

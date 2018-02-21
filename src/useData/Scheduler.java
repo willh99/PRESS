@@ -10,12 +10,8 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import Tasks.dataFetch;
 import Tasks.monitorStatus;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  *
@@ -41,12 +37,7 @@ public class Scheduler {
     {
         // Schedule timer to try and fetch sensor data from server every minute
         Timer mytimer = new Timer();
-        try {
-            InetAddress host = InetAddress.getByName("127.0.0.1");
-            mytimer.scheduleAtFixedRate(new monitorStatus(host, 5555), 0, 30000);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mytimer.scheduleAtFixedRate(new monitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 30000);
     }
     
     public static void testTiming()

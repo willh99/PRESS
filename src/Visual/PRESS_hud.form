@@ -41,6 +41,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Look &amp; Feel"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="feelingMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="connectionMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Edit Connection Settings"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -130,6 +138,10 @@
               <Color blue="cc" green="cc" red="cc" type="rgb"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="homePanel.setBackground(new Color(200,100,100));"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="card3"/>
@@ -280,7 +292,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="graphButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="See Live Data"/>
+                <Property name="text" type="java.lang.String" value="Graphical Data"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="graphButtonActionPerformed"/>
@@ -304,7 +316,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="dataButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="See Daily Prices"/>
+                <Property name="text" type="java.lang.String" value="Tabular Data"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dataButtonActionPerformed"/>
@@ -320,6 +332,10 @@
               </Border>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="graphPanel.setBackground(new Color(200,100,100));"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="card2"/>
@@ -329,6 +345,10 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
         </Container>
         <Container class="javax.swing.JPanel" name="dataPanel">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="dataPanel.setBackground(new Color(200,100,100));"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
               <CardConstraints cardName="card4"/>

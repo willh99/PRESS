@@ -1,6 +1,7 @@
 
 import Visual.PRESS_hud;
 import useData.Scheduler;
+import useData.Globals;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,7 +20,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Start by creating the UI //
+        // Set Global variables //
+        Globals.setHostName("127.0.0.1");
+        Globals.setHostPort(5555);
+
+        // Create the UI //
         PRESS_hud hud = new PRESS_hud();
         hud.setVisible(true);
         

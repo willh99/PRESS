@@ -90,7 +90,6 @@ public class ClientConnect
             } catch (IOException ex) {
                 //Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.getMessage());
-                //System.exit(1);
             }
         }
         else if(socket.isClosed() && (addr!=null) && (port!=0) ){
