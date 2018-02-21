@@ -530,8 +530,8 @@ public class PRESS_hud extends javax.swing.JFrame {
     private void feelingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_feelingMenuItemActionPerformed
         // Create a new frame to handle look & feel settings
         // Takes this PRESS_hud as a variable so it can change its look and feel
-        //FeelingFrame frame = new FeelingFrame(this);
-        //frame.setVisible(true);
+        FeelingFrame frame = new FeelingFrame(this);
+        frame.setVisible(true);
     }//GEN-LAST:event_feelingMenuItemActionPerformed
 
     private void connectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectionMenuItemActionPerformed
