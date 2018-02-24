@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author willy
+ * @author will
  */
 public class Globals {
     private static InetAddress SERVER_HOST = null;

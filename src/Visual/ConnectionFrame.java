@@ -17,7 +17,6 @@
 package Visual;
 
 import useData.Globals;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import useData.Scheduler;
 

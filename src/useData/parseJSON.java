@@ -57,7 +57,7 @@ public class parseJSON {
             obj.put("Sell", false);
         }
 
-        try (FileWriter file = new FileWriter("JSON_Objects/test.json")) {
+        try (FileWriter file = new FileWriter("JSON_Objects/appstatus.json")) {
                 file.write(obj.toJSONString());
                 file.flush();
             } catch (IOException e) {

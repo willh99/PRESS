@@ -29,7 +29,7 @@ import org.json.simple.JSONObject;
 
 /**
  *
- * @author willy
+ * @author will
  */
 
 public class processData {
@@ -50,6 +50,28 @@ public class processData {
         // and then add the chart to a ChartPanel
         XYDataset xyData = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createXYLineChart ("24H Voltage Readings", "Time", "Volts",
+                xyData, PlotOrientation.VERTICAL, true, true, false);
+        ChartPanel chPanel = new ChartPanel(chart);
+        //chPanel.setPreferredSize(new Dimension(100,100));
+        return chPanel;
+    }
+    
+    public static JPanel plotTemp()
+    {
+        Iterator Jarray = parseJSON.readJSONArray("t_log.json");
+        XYSeries series = new XYSeries("24h Temp");
+        int i=0;
+        
+        while(Jarray.hasNext()){
+            JSONObject obj = (JSONObject) Jarray.next();
+            series.add(i, (double) obj.get("temperature"));
+            i++;
+        }
+
+        // Add the series to a data set, add the dataset to a chart,
+        // and then add the chart to a ChartPanel
+        XYDataset xyData = new XYSeriesCollection(series);
+        JFreeChart chart = ChartFactory.createXYLineChart ("24H Temp Readings", "Time", "Degrees (C)",
                 xyData, PlotOrientation.VERTICAL, true, true, false);
         ChartPanel chPanel = new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
@@ -248,6 +270,17 @@ public class processData {
             while(Jarray.hasNext()){
                 JSONObject obj = (JSONObject) Jarray.next();
                 Object[] line = {obj.get("Timestamp"), obj.get("Voltage")};
+                model.addRow(line);
+            }
+        }
+        else if(filename.equals("t_log.json"))
+        {
+            String[] tableLine = {"Timestamp", "temperature"};
+            model.setColumnIdentifiers(tableLine);
+            
+            while(Jarray.hasNext()){
+                JSONObject obj = (JSONObject) Jarray.next();
+                Object[] line = {obj.get("Timestamp"), obj.get("temperature")};
                 model.addRow(line);
             }
         }

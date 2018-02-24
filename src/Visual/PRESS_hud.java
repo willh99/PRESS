@@ -5,6 +5,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,7 +31,7 @@ public class PRESS_hud extends javax.swing.JFrame {
      */
     public PRESS_hud() {
         initComponents();
-        this.getContentPane().setBackground(new Color(50,50,50));
+        this.getContentPane().setBackground(new Color(255,255,255));
         
         Dimension D = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(D.width/2, D.height/2 );
@@ -43,20 +45,20 @@ public class PRESS_hud extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        navPanel = new javax.swing.JPanel();
+        dataButton = new javax.swing.JButton();
+        homeButton = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
         homePanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         buyButton = new javax.swing.JButton();
         sellButton = new javax.swing.JButton();
         Status_label = new javax.swing.JLabel();
         Logo = new javax.swing.JLabel();
         downloadButton = new javax.swing.JButton();
         haltButton = new javax.swing.JButton();
-        dataButton = new javax.swing.JButton();
         dataPanel = new javax.swing.JPanel();
-        homeButton = new javax.swing.JButton();
         dataTabbedPane = new javax.swing.JTabbedPane();
         priceTabPanel = new javax.swing.JPanel();
         priceScrollPane = new javax.swing.JScrollPane();
@@ -85,25 +87,63 @@ public class PRESS_hud extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("P.R.E.S.S.");
         setBackground(new java.awt.Color(50, 50, 50));
+        getContentPane().setLayout(new java.awt.GridBagLayout());
+
+        dataButton.setText("See Your Data");
+        dataButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dataButtonActionPerformed(evt);
+            }
+        });
+
+        homeButton.setText("Back to Home");
+        homeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
+        navPanel.setLayout(navPanelLayout);
+        navPanelLayout.setHorizontalGroup(
+            navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dataButton, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(homeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        navPanelLayout.setVerticalGroup(
+            navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(homeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(dataButton, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(336, Short.MAX_VALUE))
+        );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 50;
+        gridBagConstraints.ipady = 300;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 0);
+        getContentPane().add(navPanel, gridBagConstraints);
+        navPanel.setBackground(new Color(255,153,102));
+        navPanel.getAccessibleContext().setAccessibleDescription("");
 
         mainPanel.setForeground(new java.awt.Color(204, 255, 204));
         mainPanel.setLayout(new java.awt.CardLayout());
 
         homePanel.setForeground(new java.awt.Color(204, 204, 204));
-        homePanel.setBackground(new Color(200,100,100));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        homePanel.setBackground(new Color(255,153,102));
 
         buyButton.setText("Buy");
         buyButton.addActionListener(new java.awt.event.ActionListener() {
@@ -145,13 +185,6 @@ public class PRESS_hud extends javax.swing.JFrame {
             }
         });
 
-        dataButton.setText("See Data");
-        dataButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dataButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout homePanelLayout = new javax.swing.GroupLayout(homePanel);
         homePanel.setLayout(homePanelLayout);
         homePanelLayout.setHorizontalGroup(
@@ -160,25 +193,19 @@ public class PRESS_hud extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(homePanelLayout.createSequentialGroup()
-                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                        .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
                         .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(sellButton))
                     .addGroup(homePanelLayout.createSequentialGroup()
-                        .addComponent(dataButton, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(homePanelLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(buyButton))
-                            .addGroup(homePanelLayout.createSequentialGroup()
-                                .addComponent(downloadButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(haltButton)))))
+                        .addGap(119, 730, Short.MAX_VALUE)
+                        .addComponent(buyButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePanelLayout.createSequentialGroup()
+                        .addComponent(downloadButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(haltButton)))
                 .addContainerGap())
         );
         homePanelLayout.setVerticalGroup(
@@ -188,30 +215,20 @@ public class PRESS_hud extends javax.swing.JFrame {
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 308, Short.MAX_VALUE)
                 .addComponent(sellButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buyButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(haltButton)
-                    .addComponent(dataButton)
                     .addComponent(downloadButton))
                 .addContainerGap())
         );
 
         mainPanel.add(homePanel, "card3");
 
-        dataPanel.setBackground(new Color(200,100,100));
-
-        homeButton.setText("Back to Home");
-        homeButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                homeButtonActionPerformed(evt);
-            }
-        });
+        dataPanel.setBackground(new Color(255,153,102));
 
         dataTabbedPane.setForeground(new java.awt.Color(102, 102, 102));
 
@@ -239,14 +256,14 @@ public class PRESS_hud extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(priceTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(priceTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(priceScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE))
+                .addComponent(priceScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE))
             .addContainerGap())
     );
     priceTabPanelLayout.setVerticalGroup(
         priceTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, priceTabPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(priceTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(priceTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(priceScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap())
@@ -278,14 +295,14 @@ public class PRESS_hud extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(voltsTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(voltsTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(voltsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE))
+                .addComponent(voltsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE))
             .addContainerGap())
     );
     voltsTabPanelLayout.setVerticalGroup(
         voltsTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, voltsTabPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(voltsTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(voltsTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(voltsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap())
@@ -317,14 +334,14 @@ public class PRESS_hud extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(tempTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(tempTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tempScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE))
+                .addComponent(tempScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE))
             .addContainerGap())
     );
     tempTabPanelLayout.setVerticalGroup(
         tempTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tempTabPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(tempTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tempTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(tempScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap())
@@ -338,23 +355,32 @@ public class PRESS_hud extends javax.swing.JFrame {
         dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(dataPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addGroup(dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dataPanelLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(homeButton))
-                .addComponent(dataTabbedPane))
+            .addComponent(dataTabbedPane)
             .addContainerGap())
     );
     dataPanelLayout.setVerticalGroup(
         dataPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(dataPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(dataTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(homeButton))
+            .addComponent(dataTabbedPane)
+            .addContainerGap())
     );
 
     mainPanel.add(dataPanel, "card4");
+
+    gridBagConstraints = new java.awt.GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 0;
+    gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+    gridBagConstraints.gridheight = java.awt.GridBagConstraints.REMAINDER;
+    gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+    gridBagConstraints.ipadx = 150;
+    gridBagConstraints.ipady = 100;
+    gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+    gridBagConstraints.weightx = 1.0;
+    gridBagConstraints.weighty = 1.0;
+    gridBagConstraints.insets = new java.awt.Insets(6, 12, 6, 6);
+    getContentPane().add(mainPanel, gridBagConstraints);
 
     fileMenu.setText("File");
 
@@ -411,20 +437,6 @@ public class PRESS_hud extends javax.swing.JFrame {
     mainMenuBar.add(helpMenu);
 
     setJMenuBar(mainMenuBar);
-
-    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-    getContentPane().setLayout(layout);
-    layout.setHorizontalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-    );
-    layout.setVerticalGroup(
-        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addContainerGap())
-    );
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -494,7 +506,7 @@ public class PRESS_hud extends javax.swing.JFrame {
             parseJSON.createStatusJSON(false, false, "ManualOverride");
             Status_label.setText("System Status: Halt");
             ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort());
-            c.sendFile("status.json");
+            c.sendFile("appstatus.json");
         }
     }//GEN-LAST:event_haltButtonActionPerformed
 
@@ -502,12 +514,14 @@ public class PRESS_hud extends javax.swing.JFrame {
         // Go to the data panel and display the contents of the Today's Data CSV
         processData.populateTable("TodaysData.csv", dataTable);
         processData.populateTableWithJSON("v_log.json", voltsTable);
-        processData.populateTableWithJSON("temp_log.json", tempTable);
+        processData.populateTableWithJSON("t_log.json", tempTable);
         
         priceTabGraphPanel.removeAll();
         voltsTabGraphPanel.removeAll();
+        tempTabGraphPanel.removeAll();
         JPanel priceG = processData.plotPriceData();
         JPanel voltG = processData.plotPower();
+        JPanel tempG = processData.plotTemp();
         
         GridBagConstraints c =  new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -515,10 +529,10 @@ public class PRESS_hud extends javax.swing.JFrame {
         c.weighty = 1.0;
         priceTabGraphPanel.add(priceG, c);
         voltsTabGraphPanel.add(voltG, c);
+        tempTabGraphPanel.add(tempG, c);
         
         CardLayout cL = (CardLayout) mainPanel.getLayout();
         cL.show(mainPanel, "card4");                    
-        
     }//GEN-LAST:event_dataButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
@@ -535,11 +549,18 @@ public class PRESS_hud extends javax.swing.JFrame {
     }//GEN-LAST:event_feelingMenuItemActionPerformed
 
     private void connectionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectionMenuItemActionPerformed
-        // TODO add your handling code here:
+        // Opens up a connection frame where use can change server host
         ConnectionFrame frame = new ConnectionFrame(this);
         frame.setVisible(true);
     }//GEN-LAST:event_connectionMenuItemActionPerformed
 
+    
+    private static Icon resizeIcon(String filename, int resizedWidth, int resizedHeight) {
+        ImageIcon icon = new ImageIcon("/images/" + filename);
+        Image img = icon.getImage();
+        Image resizedImage = img.getScaledInstance(resizedWidth, resizedHeight,  java.awt.Image.SCALE_SMOOTH);  
+        return new ImageIcon(resizedImage);
+    }
     /**
      * @param args the command line arguments
      */
@@ -593,10 +614,9 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JButton homeButton;
     protected javax.swing.JPanel homePanel;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel mainPanel;
+    protected javax.swing.JPanel navPanel;
     private javax.swing.JScrollPane priceScrollPane;
     private javax.swing.JPanel priceTabGraphPanel;
     private javax.swing.JPanel priceTabPanel;

@@ -14,7 +14,7 @@ import useData.ClientConnect;
 
 /**
  *
- * @author willy
+ * @author will
  */
 public class monitorStatus extends TimerTask {
 
@@ -28,7 +28,11 @@ public class monitorStatus extends TimerTask {
     public void run() {
         try {
             client.getFile("v_log.json");
-            sleep(5);
+            sleep(20);
+            client.getFile("t_log.json");
+            sleep(20);
+            client.getFile("c_log.json");
+            sleep(20);
             client.checkStatus();
         } catch (InterruptedException ex) {
             Logger.getLogger(monitorStatus.class.getName()).log(Level.SEVERE, null, ex);

@@ -21,7 +21,7 @@ import java.awt.Color;
 
 /**
  *
- * @author willy
+ * @author will
  */
 public class FeelingFrame extends javax.swing.JFrame {
 
@@ -178,21 +178,25 @@ public class FeelingFrame extends javax.swing.JFrame {
             hud.getContentPane().setBackground(new Color(50,50,50));
             hud.homePanel.setBackground(new Color(200,100,100));
             hud.dataPanel.setBackground(new Color(200,100,100));
+            hud.navPanel.setBackground(new Color(200,100,100));
         }
         else if (colorsComboBox.getSelectedItem().equals("Grey & Black")){
             hud.getContentPane().setBackground(new Color(50,50,50));
             hud.homePanel.setBackground(new Color(102,102,102));
             hud.dataPanel.setBackground(new Color(102,102,102));
+            hud.navPanel.setBackground(new Color(102,102,102));
         }
         else if (colorsComboBox.getSelectedItem().equals("Yellow & Blue")){
             hud.getContentPane().setBackground(new Color(102,102,255));
             hud.homePanel.setBackground(new Color(255,255,102));
             hud.dataPanel.setBackground(new Color(255,255,102));
+            hud.navPanel.setBackground(new Color(255,255,102));
         }
         else if (colorsComboBox.getSelectedItem().equals("Orange & White")){
             hud.getContentPane().setBackground(new Color(255,255,255));
             hud.homePanel.setBackground(new Color(255,153,102));
             hud.dataPanel.setBackground(new Color(255,153,102));
+            hud.navPanel.setBackground(new Color(255,153,102));
         }
     }//GEN-LAST:event_applyButtonActionPerformed
 
