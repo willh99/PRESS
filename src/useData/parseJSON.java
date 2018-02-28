@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -43,19 +44,8 @@ public class parseJSON {
 
         // Put timestamp into status JSON
         obj.put("Timestamp", dateFormat.format(d));
-
-        if(Buy  && !Sell){
-            obj.put("Buy", true);
-            obj.put("Sell", false);
-        }
-        else if(!Buy && Sell){
-            obj.put("Buy", false);
-            obj.put("Sell", true);
-        }
-        else{
-            obj.put("Buy", false);
-            obj.put("Sell", false);
-        }
+        obj.put("Buy", Buy);
+        obj.put("Sell", Sell);
 
         try (FileWriter file = new FileWriter("JSON_Objects/appstatus.json")) {
                 file.write(obj.toJSONString());
@@ -131,6 +121,31 @@ public class parseJSON {
         i = Jarray.iterator();
         
         return i;
+    }
+    
+    // Parses a JSON Array from a JSON file and returns the array
+    public static ArrayList getJSONArray (String filename) 
+    {
+        
+        File file;
+        JSONArray Jarray;
+        file = new File("JSON_Objects/" + filename);
+        if(!file.exists()){
+            System.out.println("File \"" +filename+ "\" does not exist. Aborting");
+            Jarray = null;
+            return Jarray;
+        }
+        
+        JSONParser parser = new JSONParser();
+        Object fileOutput = null;
+        try {
+            fileOutput = parser.parse(new FileReader(file));
+        } catch (IOException | ParseException ex) {
+            Logger.getLogger(parseJSON.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+        Jarray = (JSONArray) fileOutput;
+        return Jarray;
     }
 
     public static void readJSONObject(String filename){

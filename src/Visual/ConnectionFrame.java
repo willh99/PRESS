@@ -60,6 +60,7 @@ public class ConnectionFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
+        hostComboBox.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         hostComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
             new String[] { "127.0.0.1" }));
 
@@ -69,6 +70,13 @@ public class ConnectionFrame extends javax.swing.JFrame {
     hostComboLabel.setText("Saved Hosts");
 
     portComboLabel.setText("Port (only change if necessary)");
+
+    hostTextField.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
+    hostTextField.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            hostTextFieldActionPerformed(evt);
+        }
+    });
 
     hostTextLabel.setText("Enter a New Host:");
 
@@ -92,6 +100,7 @@ public class ConnectionFrame extends javax.swing.JFrame {
         + Globals.getHostPort() + " )"
     );
 
+    portSpinner.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
     portSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 65000, 1));
     portSpinner.setValue(Globals.getHostPort());
 
@@ -104,21 +113,21 @@ public class ConnectionFrame extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(currentValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createSequentialGroup()
-                    .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addBtn))
-                .addGroup(mainPanelLayout.createSequentialGroup()
-                    .addComponent(portSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addGap(80, 80, 80)
-                    .addComponent(applyBtn))
-                .addGroup(mainPanelLayout.createSequentialGroup()
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(hostTextLabel)
                         .addComponent(hostComboLabel)
                         .addComponent(titleLabel)
                         .addComponent(hostComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(portComboLabel))
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 98, Short.MAX_VALUE))
+                .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(portSpinner)
+                        .addComponent(hostTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(applyBtn, javax.swing.GroupLayout.Alignment.TRAILING))))
             .addContainerGap())
     );
     mainPanelLayout.setVerticalGroup(
@@ -144,7 +153,7 @@ public class ConnectionFrame extends javax.swing.JFrame {
                 .addComponent(addBtn))
             .addGap(18, 18, 18)
             .addComponent(currentValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addContainerGap(28, Short.MAX_VALUE))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,6 +194,10 @@ public class ConnectionFrame extends javax.swing.JFrame {
         }
             
     }//GEN-LAST:event_addBtnActionPerformed
+
+    private void hostTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hostTextFieldActionPerformed
 
     
     public static boolean validIP (String ip) {

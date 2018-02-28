@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,7 +24,11 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.xy.*;
 import org.json.simple.JSONObject;
 
@@ -95,6 +100,36 @@ public class processData {
         ChartPanel chPanel =new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
         return chPanel;
+    }
+    
+    public static JPanel showChargeLevel()
+    {
+        ArrayList<JSONObject> Jarray = parseJSON.getJSONArray("v_log.json");
+        double voltage = (double) Jarray.get(Jarray.size()-1).get("Voltage");
+        voltage = voltage-11.5;
+        
+        DefaultPieDataset dataset=new DefaultPieDataset();
+        dataset.setValue("Remaining", voltage/1.6);
+        dataset.setValue("Used", (1.6-voltage)/1.6);
+
+
+        // Create chart
+        JFreeChart chart = ChartFactory.createPieChart(
+            "Battery Charge Status",
+            dataset,
+            true, 
+            true,
+            false);
+
+        //Format Label
+        PieSectionLabelGenerator labelGenerator = new StandardPieSectionLabelGenerator(
+            "{0} : ({2})", new DecimalFormat("0"), new DecimalFormat("0%"));
+        ((PiePlot) chart.getPlot()).setLabelGenerator(labelGenerator);
+
+        // Create Panel
+        ChartPanel panel = new ChartPanel(chart);
+        return panel;
+ 
     }
     
     // Downloads new file from the Internet to be used for data decision making
@@ -285,6 +320,10 @@ public class processData {
             }
         }
      
+    }
+
+    private static void setContentPane(ChartPanel panel) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
 

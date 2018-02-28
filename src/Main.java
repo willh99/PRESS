@@ -21,7 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // Set Global variables //
-        Globals.setHostName("10.199.42.155");
+        Globals.setHostName("10.199.41.199");
         Globals.setHostPort(5555);
 
         // Create the UI //
