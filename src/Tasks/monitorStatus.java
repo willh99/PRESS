@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import useData.ClientConnect;
+import useData.Globals;
 
 /**
  *
@@ -21,7 +22,7 @@ public class monitorStatus extends TimerTask {
     ClientConnect client;
     
     public monitorStatus(InetAddress host, int port){
-        client = new ClientConnect(host, port);
+        client = new ClientConnect(host, port, Globals.getTimeout());
     }
     
     @Override

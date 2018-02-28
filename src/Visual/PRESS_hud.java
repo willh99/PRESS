@@ -112,7 +112,8 @@ public class PRESS_hud extends javax.swing.JFrame {
             }
         });
 
-        systemButton.setText("System Status");
+        systemButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/battery-sm.png"))); // NOI18N
+        systemButton.setText(" System Status");
         systemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 systemButtonActionPerformed(evt);
@@ -512,7 +513,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(true, false, "ManualOverride");
             Status_label.setText("System Status: Buy");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort());
+            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             c.sendFile("appstatus.json");
         }
     }//GEN-LAST:event_buyButtonActionPerformed
@@ -525,7 +526,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(false, true, "ManualOverride");
             Status_label.setText("System Status: Sell");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort());
+            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             c.sendFile("appstatus.json");
         }
     }//GEN-LAST:event_sellButtonActionPerformed
@@ -552,7 +553,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(false, false, "ManualOverride");
             Status_label.setText("System Status: Halt");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort());
+            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             c.sendFile("appstatus.json");
         }
     }//GEN-LAST:event_haltButtonActionPerformed
@@ -609,7 +610,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(true, true, "ManualOverride");
             Status_label.setText("System Status: Automatic");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort());
+            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             c.sendFile("appstatus.json");
         }
     }//GEN-LAST:event_useAlgorithmBtnActionPerformed
@@ -621,10 +622,10 @@ public class PRESS_hud extends javax.swing.JFrame {
         GridBagConstraints c =  new GridBagConstraints();
         //c.fill = GridBagConstraints.BOTH;
         c.gridx = 0; c.gridy = 0;
-        c.gridwidth = 2; c.gridheight = 2;
+        c.gridwidth = 1; c.gridheight = 1;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.weightx = .5;
-        c.weighty = .5;
+        c.weightx = .25;
+        c.weighty = .25;
         systemPanel.add(charge, c);
         
         CardLayout cL = (CardLayout) mainPanel.getLayout();

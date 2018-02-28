@@ -39,7 +39,7 @@ public class Scheduler {
     {
         // Schedule timer to try and fetch sensor data from server every minute
         statusTimer = new Timer();
-        statusTimer.scheduleAtFixedRate(new monitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 10000);
+        statusTimer.scheduleAtFixedRate(new monitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 30000);
     }
     
     public static void testTiming()

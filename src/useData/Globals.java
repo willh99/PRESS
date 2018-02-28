@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 public class Globals {
     private static InetAddress SERVER_HOST = null;
     private static int SERVER_PORT;
+    private static int TIMEOUT;
     
     public static InetAddress getHostName()
     {
@@ -53,5 +54,16 @@ public class Globals {
     public static void setHostPort(int p)
     {
         SERVER_PORT = p;
+    }
+    
+    public static int getTimeout()
+    {
+        return TIMEOUT;
+    }
+    
+    public static void setTimeout(int t)
+    {
+        if(t>=0)
+            TIMEOUT = t;
     }
 }

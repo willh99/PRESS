@@ -16,8 +16,8 @@ import java.util.Scanner;
 
 public class ClientConnect
 {
-    private InetAddress addr = null;
-    private int port;
+    private InetSocketAddress addr = null;
+    private int timeout;
     private Socket socket = null;
     private FileOutputStream fos = null;
     private DataInputStream din = null;
@@ -25,19 +25,21 @@ public class ClientConnect
     private PrintStream pout = null;
     private Scanner scan = null;
 
-    public ClientConnect(InetAddress address, int p) 
+    public ClientConnect(InetAddress address, int p, int t) 
     {
-        addr = address; port = p;
+        addr = new InetSocketAddress(address, p);
+        timeout = t;
         try {
             System.out.println("Initializing Client");
-            socket = new Socket(address, p);
+            socket = new Socket();
+            socket.connect(addr, timeout);
             scan = new Scanner(System.in);
             din = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
             pout = new PrintStream(socket.getOutputStream());
         } catch (IOException ex) {
             //Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getMessage() + "\n");
             //System.exit(1);
         }
     }
@@ -82,7 +84,8 @@ public class ClientConnect
         {
             try {
                 System.out.println("Initializing Client");
-                socket = new Socket(addr, port);
+                socket = new Socket();
+                socket.connect(addr, timeout);
                 scan = new Scanner(System.in);
                 din = new DataInputStream(socket.getInputStream());
                 dos = new DataOutputStream(socket.getOutputStream());
@@ -90,19 +93,24 @@ public class ClientConnect
             } catch (IOException ex) {
                 //Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.getMessage());
+                //System.exit(1);
             }
         }
-        else if(socket.isClosed() && (addr!=null) && (port!=0) ){
-            socket = new Socket(addr, port);
+        else if((socket.isClosed() || !socket.isConnected()) && (addr!=null) && (addr.getPort()>0) ){
+            System.out.println("Trying to Connect Existing Socket");
+            socket = new Socket();
+            socket.connect(addr, timeout);
             din = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
             pout = new PrintStream(socket.getOutputStream());
         }
+        else if(!socket.isConnected())
+            System.out.println("Socket is already Connected: " + socket.isConnected());
         else if(!socket.isClosed())
-            System.out.println("Socket is already Connected. " + socket.isConnected());
-        else if(addr!=null)
+            System.out.println("Socket is already Connected: " + socket.isConnected());
+        else if(addr==null)
             System.out.println("No address set");
-        else if(port<=0)
+        else if(addr.getPort()<=0)
             System.out.println("No port set");
     }
     
@@ -112,7 +120,7 @@ public class ClientConnect
             connectSocket();
             if(socket == null)
                 return;
-            else if(socket.isClosed())
+            else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
             System.out.println("Failed to connect to server");
@@ -142,7 +150,7 @@ public class ClientConnect
             connectSocket();
             if(socket == null)
                 return;
-            else if(socket.isClosed())
+            else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
             System.out.println("Failed to connect to server");
@@ -196,7 +204,7 @@ public class ClientConnect
             connectSocket();
             if(socket == null)
                 return;
-            else if(socket.isClosed())
+            else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
             System.out.println("Failed to connect to server");
@@ -241,7 +249,7 @@ public class ClientConnect
             connectSocket();
             if(socket == null)
                 return;
-            else if(socket.isClosed())
+            else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
             System.out.println("Failed to connect to server");

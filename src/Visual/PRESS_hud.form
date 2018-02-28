@@ -178,7 +178,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="systemButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="System Status"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/battery-sm.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value=" System Status"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="systemButtonActionPerformed"/>
