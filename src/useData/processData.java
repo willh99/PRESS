@@ -50,7 +50,7 @@ public class processData {
             series.add(i, (double) obj.get("Voltage"));
             i++;
         }
-
+        
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
         XYDataset xyData = new XYSeriesCollection(series);
@@ -321,9 +321,23 @@ public class processData {
         }
      
     }
-
-    private static void setContentPane(ChartPanel panel) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public static double getProfitMargin() 
+    {
+        File file = new File("profit.txt");
+        double profit = 0;
+        
+        if(!file.exists())
+            return 0;
+        
+        try(BufferedReader br = new BufferedReader(new FileReader(file))){
+            // String used to read lines. profit.txt should only have 1 line
+            String line = br.readLine();
+            profit = Double.parseDouble(line);
+        } catch (IOException e){
+           System.out.println(e.getMessage()); 
+        }
+        return profit;
     }
 }
 

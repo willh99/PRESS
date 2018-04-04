@@ -7,11 +7,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import useData.ClientConnect;
 import useData.Globals;
+import useData.SendAppStatus;
 import useData.processData;
 
 /*
@@ -182,7 +184,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         Status_label.setBackground(new java.awt.Color(255, 255, 255));
         Status_label.setFont(new java.awt.Font("HP Simplified Light", 1, 18)); // NOI18N
         Status_label.setForeground(new java.awt.Color(255, 255, 255));
-        Status_label.setText("System Status: Init");
+        Status_label.setText("System Status: Use Algorithm");
 
         Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LOGO.000.jpg"))); // NOI18N
         Logo.setText("jLabel2");
@@ -233,9 +235,8 @@ public class PRESS_hud extends javax.swing.JFrame {
                         .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Logo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 50, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(Status_label, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
                     .addGroup(homePanelLayout.createSequentialGroup()
                         .addComponent(downloadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -300,7 +301,7 @@ public class PRESS_hud extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(priceTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(priceTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(priceScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
+                .addComponent(priceScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))
             .addContainerGap())
     );
     priceTabPanelLayout.setVerticalGroup(
@@ -339,7 +340,7 @@ public class PRESS_hud extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(voltsTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(voltsTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(voltsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
+                .addComponent(voltsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))
             .addContainerGap())
     );
     voltsTabPanelLayout.setVerticalGroup(
@@ -378,7 +379,7 @@ public class PRESS_hud extends javax.swing.JFrame {
             .addContainerGap()
             .addGroup(tempTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(tempTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tempScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
+                .addComponent(tempScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 649, Short.MAX_VALUE))
             .addContainerGap())
     );
     tempTabPanelLayout.setVerticalGroup(
@@ -507,27 +508,31 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
         // Change status JSON to Sell (Buy=false, Sell=true)
-        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Sell\"?", "Confirm",
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Buy\"?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(true, false, "ManualOverride");
             Status_label.setText("System Status: Buy");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            c.sendFile("appstatus.json");
+            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
+            //c.sendFile("appstatus.json");
+            SendAppStatus sas = new SendAppStatus();
+            sas.start();
         }
     }//GEN-LAST:event_buyButtonActionPerformed
 
     private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
         // Change status JSON to Buy (Buy=true, Sell=false)
-        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Buy\"?", "Confirm",
+        int response  = JOptionPane.showConfirmDialog(null, "Are you sure you would like to change the system state to \"Sell\"?", "Confirm",
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(false, true, "ManualOverride");
             Status_label.setText("System Status: Sell");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            c.sendFile("appstatus.json");
+            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
+            //c.sendFile("appstatus.json");
+            SendAppStatus sas = new SendAppStatus();
+            sas.start();
         }
     }//GEN-LAST:event_sellButtonActionPerformed
 
@@ -553,8 +558,10 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(false, false, "ManualOverride");
             Status_label.setText("System Status: Halt");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            c.sendFile("appstatus.json");
+            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
+            //c.sendFile("appstatus.json");
+            SendAppStatus sas = new SendAppStatus();
+            sas.start();
         }
     }//GEN-LAST:event_haltButtonActionPerformed
 
@@ -610,8 +617,10 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             parseJSON.createStatusJSON(true, true, "ManualOverride");
             Status_label.setText("System Status: Automatic");
-            ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            c.sendFile("appstatus.json");
+            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
+            //c.sendFile("appstatus.json");
+            SendAppStatus sas = new SendAppStatus();
+            sas.start();
         }
     }//GEN-LAST:event_useAlgorithmBtnActionPerformed
 
@@ -620,16 +629,24 @@ public class PRESS_hud extends javax.swing.JFrame {
         JPanel charge = processData.showChargeLevel();
         
         GridBagConstraints c =  new GridBagConstraints();
-        //c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0; c.gridy = 0;
-        c.gridwidth = 1; c.gridheight = 1;
+        c.gridwidth = 1; c.gridheight = 2;
+        c.weightx = .25; c.weighty = .25;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.weightx = .25;
-        c.weighty = .25;
+        
         systemPanel.add(charge, c);
         
         CardLayout cL = (CardLayout) mainPanel.getLayout();
-        cL.show(mainPanel, "card5");     
+        cL.show(mainPanel, "card5");
+        
+        JLabel profitLabel = new JLabel("Estimated Profit: $" + processData.getProfitMargin());
+        profitLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 0; c.gridy = 2;
+        c.gridwidth = 1; c.gridheight = 1;
+        c.weightx = 0; c.weighty = .1;
+        systemPanel.add(profitLabel, c);
     }//GEN-LAST:event_systemButtonActionPerformed
 
     

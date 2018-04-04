@@ -23,6 +23,7 @@ public class Main {
         // Set Global variables //
         Globals.setHostName("10.199.41.199");
         Globals.setHostPort(5555);
+        Globals.setTimeout(4000);
 
         // Create the UI //
         PRESS_hud hud = new PRESS_hud();
