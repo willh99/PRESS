@@ -24,11 +24,16 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.*;
 import org.json.simple.JSONObject;
 
@@ -64,20 +69,29 @@ public class processData {
     public static JPanel plotTemp()
     {
         Iterator Jarray = parseJSON.readJSONArray("t_log.json");
-        XYSeries series = new XYSeries("24h Temp");
-        int i=0;
+        TimeSeries tSeries = new TimeSeries("System Temperature");
+        SimpleDateFormat sdp = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
         
+        // Iterate through JSON array and extract temp values
+        // and timestamp.
         while(Jarray.hasNext()){
             JSONObject obj = (JSONObject) Jarray.next();
-            series.add(i, (double) obj.get("temperature"));
-            i++;
+            try {
+                Date d = sdp.parse((String) obj.get("Timestamp"));
+                tSeries.add(new Second(d), (double) obj.get("temperature"));
+            } catch (ParseException ex) {
+                System.out.println(ex.getMessage());
+                //Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            // REMEMBER TO DELETE THIS WHEN TEMP JSON IS CREATED WITH 1 SECOND INTERVALS
+            Jarray.next();
         }
 
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
-        XYDataset xyData = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart ("24H Temp Readings", "Time", "Degrees (C)",
-                xyData, PlotOrientation.VERTICAL, true, true, false);
+        TimeSeriesCollection dataset = new TimeSeriesCollection(tSeries);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart("24H Temp Readings", "Time", "Degrees (C)",
+                dataset, true, true, false);
         ChartPanel chPanel = new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
         return chPanel;
@@ -86,17 +100,23 @@ public class processData {
     public static JPanel plotPriceData() 
     {
         List<dataPoint> priceData = readPriceData("TodaysData.csv");
-        XYSeries series = new XYSeries("24h Power Pricing");
+        TimeSeries tSeries = new TimeSeries("Price ($/MWHr)");
         
         for(int i=0; i<priceData.size(); i++){
-            series.add(i, priceData.get(i).getPrice());
+            tSeries.add(new Second(priceData.get(i).getTimeStamp()), priceData.get(i).getPrice());
         }
         
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
-        XYDataset xyData = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart ("NYISO LBMP", "Time", "$/MWH",
-                xyData, PlotOrientation.VERTICAL, true, true, false);
+        TimeSeriesCollection dataset = new TimeSeriesCollection(tSeries);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart ("NYISO LBMP", "Time of Day", "$/MWHr",
+                dataset, true, true, false);
+        
+        // Set format of date axis (x-axis)
+        XYPlot plot = chart.getXYPlot();
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setDateFormatOverride(new SimpleDateFormat("HH:MM"));
+        
         ChartPanel chPanel =new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
         return chPanel;

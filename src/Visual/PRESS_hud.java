@@ -5,12 +5,14 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 import useData.ClientConnect;
 import useData.Globals;
 import useData.SendAppStatus;
@@ -503,7 +505,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void AboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutMenuItemActionPerformed
         // Just some info about the project
-        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Beta 1.0", "About", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Beta 1.2", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AboutMenuItemActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
@@ -642,6 +644,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         
         JLabel profitLabel = new JLabel("Estimated Profit: $" + processData.getProfitMargin());
         profitLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+        profitLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
         c.fill = GridBagConstraints.NONE;
         c.gridx = 0; c.gridy = 2;
         c.gridwidth = 1; c.gridheight = 1;
