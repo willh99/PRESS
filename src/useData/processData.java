@@ -16,6 +16,9 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,13 +31,11 @@ import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.xy.*;
 import org.json.simple.JSONObject;
 
 /**
@@ -47,20 +48,44 @@ public class processData {
     public static JPanel plotPower()
     {
         Iterator Jarray = parseJSON.readJSONArray("v_log.json");
-        XYSeries series = new XYSeries("24h Power");
-        int i=0;
+        TimeSeries tSeries = new TimeSeries("System Voltage");
+        SimpleDateFormat sdp = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
+        JSONObject obj = null;
+        String day = "";
         
         while(Jarray.hasNext()){
-            JSONObject obj = (JSONObject) Jarray.next();
-            series.add(i, (double) obj.get("Voltage"));
-            i++;
+            obj = (JSONObject) Jarray.next();
+            Date d;
+            try {
+                d = sdp.parse((String) obj.get("Timestamp"));
+                tSeries.add(new Second(d), (double) obj.get("Voltage"));
+            } catch (ParseException ex) {
+                System.out.println(ex.getMessage());
+            }
+            // ============================================================================
+            // REMEMBER TO DELETE THIS WHEN Voltage JSON IS CREATED WITH 1 SECOND INTERVALS
+            // ============================================================================
+            Jarray.next();
+        }
+        
+        // Set day string to show day which data was collected
+        if(obj != null){
+            try {
+                Date d = sdp.parse((String) obj.get("Timestamp"));
+                LocalDate ldate = d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                day = "for " + ldate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US) +
+                      " " + ldate.getMonth().getDisplayName(TextStyle.FULL, Locale.US) + " " +
+                      ldate.getDayOfMonth() + ", " + ldate.getYear();
+            } catch (ParseException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
-        XYDataset xyData = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createXYLineChart ("24H Voltage Readings", "Time", "Volts",
-                xyData, PlotOrientation.VERTICAL, true, true, false);
+        TimeSeriesCollection dataset = new TimeSeriesCollection(tSeries);
+        JFreeChart chart = ChartFactory.createTimeSeriesChart("Voltage Readings " + day, "Time", "Degrees (C)",
+                dataset, true, true, false);
         ChartPanel chPanel = new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
         return chPanel;
@@ -71,11 +96,13 @@ public class processData {
         Iterator Jarray = parseJSON.readJSONArray("t_log.json");
         TimeSeries tSeries = new TimeSeries("System Temperature");
         SimpleDateFormat sdp = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
+        JSONObject obj = null;
+        String day = "";
         
         // Iterate through JSON array and extract temp values
         // and timestamp.
         while(Jarray.hasNext()){
-            JSONObject obj = (JSONObject) Jarray.next();
+            obj = (JSONObject) Jarray.next();
             try {
                 Date d = sdp.parse((String) obj.get("Timestamp"));
                 tSeries.add(new Second(d), (double) obj.get("temperature"));
@@ -83,14 +110,29 @@ public class processData {
                 System.out.println(ex.getMessage());
                 //Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
             }
+            // =========================================================================
             // REMEMBER TO DELETE THIS WHEN TEMP JSON IS CREATED WITH 1 SECOND INTERVALS
+            // =========================================================================
             Jarray.next();
+        }
+        
+        // Set day string to show day which data was collected
+        if(obj != null){
+            try {
+                Date d = sdp.parse((String) obj.get("Timestamp"));
+                LocalDate ldate = d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                day = "for " + ldate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US) +
+                      " " + ldate.getMonth().getDisplayName(TextStyle.FULL, Locale.US) + " " +
+                      ldate.getDayOfMonth() + ", " + ldate.getYear();
+            } catch (ParseException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
 
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
         TimeSeriesCollection dataset = new TimeSeriesCollection(tSeries);
-        JFreeChart chart = ChartFactory.createTimeSeriesChart("24H Temp Readings", "Time", "Degrees (C)",
+        JFreeChart chart = ChartFactory.createTimeSeriesChart("Temperature Readings " + day, "Time", "Degrees (C)",
                 dataset, true, true, false);
         ChartPanel chPanel = new ChartPanel(chart);
         //chPanel.setPreferredSize(new Dimension(100,100));
@@ -101,15 +143,24 @@ public class processData {
     {
         List<dataPoint> priceData = readPriceData("TodaysData.csv");
         TimeSeries tSeries = new TimeSeries("Price ($/MWHr)");
+        String day = "";
         
         for(int i=0; i<priceData.size(); i++){
             tSeries.add(new Second(priceData.get(i).getTimeStamp()), priceData.get(i).getPrice());
         }
         
+        if(priceData != null){
+            Date d = priceData.get(0).getTimeStamp();
+            LocalDate ldate = d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            day = "for " + ldate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US) +
+                    " " + ldate.getMonth().getDisplayName(TextStyle.FULL, Locale.US) + " " +
+                    ldate.getDayOfMonth() + ", " + ldate.getYear();
+        }
+        
         // Add the series to a data set, add the dataset to a chart,
         // and then add the chart to a ChartPanel
         TimeSeriesCollection dataset = new TimeSeriesCollection(tSeries);
-        JFreeChart chart = ChartFactory.createTimeSeriesChart ("NYISO LBMP", "Time of Day", "$/MWHr",
+        JFreeChart chart = ChartFactory.createTimeSeriesChart ("NYISO LBMP " + day, "Time of Day", "$/MWHr",
                 dataset, true, true, false);
         
         // Set format of date axis (x-axis)
