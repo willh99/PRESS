@@ -16,14 +16,60 @@
  */
 package Visual;
 
+import javax.swing.JLabel;
+import org.json.simple.JSONObject;
+import useData.parseJSON;
+
 /**
  *
  * @author will
  */
 public class UpdateVis {
     
-    public static void updateSysStatus()
+    public static void updateSysStatus(JLabel label)
     {
+        JSONObject obj = parseJSON.getJSONObject("home_status.json");
         
+        if(obj == null){
+            label.setText("System Status: Disconnected");
+            return;
+        }
+        
+        boolean buy = (boolean) obj.get("Buy");
+        boolean sell = (boolean) obj.get("Sell");
+        
+        if(buy && !sell){
+            label.setText("System Status: Buy");
+            return;
+        }
+        else if(!buy && sell){
+            label.setText("System Status: Sell");
+            return;
+        }
+                
+    }
+    
+    public static void updateAlgorithmStatus(JLabel label)
+    {
+        JSONObject obj = parseJSON.getJSONObject("algorithm_status.json");
+        
+        if(obj == null){
+            label.setText("Algorthm Status: N/A");
+            return;
+        }
+        
+        boolean buy = (boolean) obj.get("Buy");
+        boolean sell = (boolean) obj.get("Sell");
+        
+        if(buy && !sell){
+            label.setText("System Status: Buy");
+            return;
+        }
+        else if(!buy && sell){
+            label.setText("System Status: Sell");
+            return;
+        }
+        else
+            label.setText("System Status: Halt");
     }
 }

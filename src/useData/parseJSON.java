@@ -44,9 +44,10 @@ public class parseJSON {
         String filename;
         
         if(type.equals("Algorithmic"))
-            filename = "algorithmstatus.json";
+            filename = "algorithm_status.json";
         else
             filename = "appstatus.json";
+            
 
         // Put timestamp into status JSON
         obj.put("Timestamp", dateFormat.format(d));
@@ -59,7 +60,7 @@ public class parseJSON {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        System.out.println(obj);
+        // System.out.println(obj);
     }
   
     public static void createPowerJSON() 
@@ -154,6 +155,9 @@ public class parseJSON {
         return Jarray;
     }
 
+    
+    // Return a json object from the specifiled file
+    // Returns null if file does not exist or cannot be parsed
     public static JSONObject getJSONObject(String filename)
     {
         if(!filename.contains(".json")){
@@ -176,8 +180,6 @@ public class parseJSON {
             System.out.println(ex.getMessage());
             
         }
-        
-        System.out.println("HELLO!");
         return obj;
     }
 }

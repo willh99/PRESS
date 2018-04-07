@@ -251,36 +251,40 @@ public class processData {
             // String used to read lines. Read first line here
             // Note: header line is skipped as it does not hold data
             br.readLine();
-            String line = br.readLine();
+            String line;
             
-            
-            while(line != null){
+            while( (line=br.readLine()) != null){
                 // Array of values held in .csv file
                 String[] attributes = line.split((","));
                 
-                // Get rid of extra " around time and location
-                // Note: this may have to change depending on the data format
-                attributes[0] = attributes[0].substring(1, attributes[0].length()-1);    
-                attributes[1] = attributes[1].substring(1, attributes[1].length()-1);
                 
-                Date d = dateFormat.parse(attributes[0]);
-                String name = attributes[1];
-                double data = Double.parseDouble(attributes[3]);
-                
-                // Only add data from the chosen distribution zone to a 
-                // dataPoint class (see below). Each dataPoint instance is
-                // added to a List of dataPoint's 
-                if(name.equals("N.Y.C.")){
-                    DataPoint dP = new DataPoint(d, name, data);
-                    dataList.add(dP);
+                try{
+                    // Get rid of extra " around time and location
+                    // Note: this may have to change depending on the data format
+                    attributes[0] = attributes[0].substring(1, attributes[0].length()-1);    
+                    attributes[1] = attributes[1].substring(1, attributes[1].length()-1);
+
+                    Date d = dateFormat.parse(attributes[0]);
+                    String name = attributes[1];
+                    double data = Double.parseDouble(attributes[3]);
+                               
+                    // Only add data from the chosen distribution zone to a 
+                    // dataPoint class (see below). Each dataPoint instance is
+                    // added to a List of dataPoint's 
+                    if(name.equals("N.Y.C.")){
+                        DataPoint dP = new DataPoint(d, name, data);
+                        dataList.add(dP);
+                    }
+                } catch (ArrayIndexOutOfBoundsException e){
+                    System.out.println("Array Index: " + e.getMessage() + "out of bounds in attributes");
                 }
-                line = br.readLine();
+                    
             }  
         } catch (IOException e){
             e.printStackTrace();
         } catch (ParseException ex) {
             Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         
         return dataList;
     }
@@ -326,6 +330,9 @@ public class processData {
                 Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        if(!buy && !sell)
+            parseJSON.createStatusJSON(buy, sell, "Algorithmic");
     }
     
     // Populates a table with the contents of a .csv file

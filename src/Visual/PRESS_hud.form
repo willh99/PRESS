@@ -132,7 +132,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="systemButton" max="32767" attributes="0"/>
-                      <Component id="dataButton" alignment="0" pref="256" max="32767" attributes="0"/>
+                      <Component id="dataButton" alignment="0" pref="302" max="32767" attributes="0"/>
                       <Component id="homeButton" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -232,12 +232,16 @@
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="modeLabel" pref="295" max="32767" attributes="0"/>
-                                  <Component id="statusLabel" pref="295" max="32767" attributes="0"/>
+                                  <Component id="modeLabel" pref="248" max="32767" attributes="0"/>
+                                  <Component id="statusLabel" pref="248" max="32767" attributes="0"/>
+                                  <Component id="algorithmLabel" alignment="0" pref="248" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="downloadButton" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="downloadButton" max="32767" attributes="0"/>
+                                  <Component id="refreshBtn" max="32767" attributes="0"/>
+                              </Group>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="useAlgorithmBtn" max="32767" attributes="0"/>
@@ -265,15 +269,24 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="218" max="-2" attributes="0"/>
-                          <Component id="statusLabel" min="-2" pref="60" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="statusLabel" min="-2" pref="60" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="algorithmLabel" min="-2" pref="60" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="106" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="buyButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="sellButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="buyButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="sellButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="haltButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="refreshBtn" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="haltButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="downloadButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -331,9 +344,12 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="System Status: Use Algorithm"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;System Status: Use Algorithm&quot;" type="code"/>
+                </Property>
               </Properties>
               <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="UpdateVis.updateSysStatus(statusLabel);"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
               </AuxValues>
             </Component>
@@ -402,6 +418,34 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useAlgorithmBtnActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="refreshBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Refresh"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="refreshBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="algorithmLabel">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="HP Simplified Light" size="18" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;Algorithm Status: Use Algorithm&quot;" type="code"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="UpdateVis.updateAlgorithmStatus(algorithmLabel);"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
+              </AuxValues>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="dataPanel">
@@ -461,7 +505,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="priceTabGraphPanel" max="32767" attributes="0"/>
-                                  <Component id="priceScrollPane" pref="649" max="32767" attributes="0"/>
+                                  <Component id="priceScrollPane" pref="602" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -526,7 +570,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="voltsTabGraphPanel" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="voltsScrollPane" alignment="1" pref="649" max="32767" attributes="0"/>
+                                  <Component id="voltsScrollPane" alignment="1" pref="602" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -591,7 +635,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="tempTabGraphPanel" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="tempScrollPane" alignment="1" pref="649" max="32767" attributes="0"/>
+                                  <Component id="tempScrollPane" alignment="1" pref="602" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
