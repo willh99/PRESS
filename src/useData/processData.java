@@ -65,7 +65,8 @@ public class processData {
             // ============================================================================
             // REMEMBER TO DELETE THIS WHEN Voltage JSON IS CREATED WITH 1 SECOND INTERVALS
             // ============================================================================
-            Jarray.next();
+            if(Jarray.hasNext())
+                Jarray.next();
         }
         
         // Set day string to show day which data was collected
@@ -113,7 +114,8 @@ public class processData {
             // =========================================================================
             // REMEMBER TO DELETE THIS WHEN TEMP JSON IS CREATED WITH 1 SECOND INTERVALS
             // =========================================================================
-            Jarray.next();
+            if(Jarray.hasNext())
+                Jarray.next();
         }
         
         // Set day string to show day which data was collected
@@ -141,7 +143,7 @@ public class processData {
     
     public static JPanel plotPriceData() 
     {
-        List<dataPoint> priceData = readPriceData("TodaysData.csv");
+        List<DataPoint> priceData = readPriceData("TodaysData.csv");
         TimeSeries tSeries = new TimeSeries("Price ($/MWHr)");
         String day = "";
         
@@ -149,7 +151,7 @@ public class processData {
             tSeries.add(new Second(priceData.get(i).getTimeStamp()), priceData.get(i).getPrice());
         }
         
-        if(priceData != null){
+        if(!priceData.isEmpty()){
             Date d = priceData.get(0).getTimeStamp();
             LocalDate ldate = d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             day = "for " + ldate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.US) +
@@ -236,14 +238,16 @@ public class processData {
     }
     
     // Read data from a .csv file and return a List holding the relevent data
-    private static List<dataPoint> readPriceData(String filename) 
+    private static List<DataPoint> readPriceData(String filename) 
     {
-        List<dataPoint> dataList = new ArrayList<>();
-        Path pathToFile = Paths.get(filename);
+        List<DataPoint> dataList = new ArrayList<>();
+        File file = new File(filename);
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         
-        try(BufferedReader br = Files.newBufferedReader(pathToFile,
-                StandardCharsets.US_ASCII)){
+        if(!file.exists())
+            return dataList;
+        
+        try(BufferedReader br = new BufferedReader(new FileReader(file))){
             // String used to read lines. Read first line here
             // Note: header line is skipped as it does not hold data
             br.readLine();
@@ -267,7 +271,7 @@ public class processData {
                 // dataPoint class (see below). Each dataPoint instance is
                 // added to a List of dataPoint's 
                 if(name.equals("N.Y.C.")){
-                    dataPoint dP = new dataPoint(d, name, data);
+                    DataPoint dP = new DataPoint(d, name, data);
                     dataList.add(dP);
                 }
                 line = br.readLine();
@@ -281,16 +285,14 @@ public class processData {
         return dataList;
     }
 
-    
-    // TODO: add fail-safes for instances where data is either not found
-    //       of unable to be process
+    // Algorithm for processing pricing data and deciding whether to buy/sell
+    // Identical methodoloy appied on server-side
     public static void analyizePriceData () 
     {
         // Retrieve List of dataPoint's (see below) holding relevant data
-        List<dataPoint> dataList = readPriceData("TodaysData.csv");
+        List<DataPoint> dataList = readPriceData("TodaysData.csv");
         double max=0, min=1000;
         boolean buy=false, sell=false;
-        //LocalDateTime localTime;
         
         // Find maximum and minimal prices
         for(int i=0; i<dataList.size(); i++){
@@ -326,6 +328,8 @@ public class processData {
         }
     }
     
+    // Populates a table with the contents of a .csv file
+    // Assumes that the first row of the .csv are column headers
     public static void populateTable(String filename, JTable table)
     {
         File file =  new File(filename);
@@ -356,6 +360,7 @@ public class processData {
         }  
     }
     
+    // Populates a JTable with the contents of a specified json
     public static void populateTableWithJSON(String filename, JTable table)
     {
         File file =  new File("JSON_Objects/" + filename);
@@ -393,53 +398,27 @@ public class processData {
      
     }
     
-    public static double getProfitMargin() 
+    // Get the profit margin, buy time, and sell time from profit.json
+    // and returns them in an array
+    public static double[] getProfitMargin() 
     {
-        File file = new File("profit.txt");
-        double profit = 0;
+        double[] profit = {0,0,0};
         
-        if(!file.exists())
-            return 0;
-        
-        try(BufferedReader br = new BufferedReader(new FileReader(file))){
-            // String used to read lines. profit.txt should only have 1 line
-            String line = br.readLine();
-            profit = Double.parseDouble(line);
-        } catch (IOException e){
-           System.out.println(e.getMessage()); 
+        JSONObject obj = parseJSON.getJSONObject("profit.json");
+        if(obj == null){
+            System.out.println("Null JSONObject");
+            return profit;
         }
+        
+        try{
+            profit[0] = (double) obj.get("profit");
+            profit[1] = (long) obj.get("Sell Time");
+            profit[2] = (double) obj.get("Buy Time");
+        } catch (Exception e){
+            e.printStackTrace();
+            //System.out.println();
+        }
+        
         return profit;
-    }
-}
-
-
-// Class to hold relevent information about a data point
-// Holds time of price data, name of associated region,
-// and the price at given the aforementioned parameters
-class dataPoint {
-    
-    private final Date timeStamp;
-    private final String name;
-    private final double price;
-    
-    public dataPoint(Date tS, String n, double p){
-        timeStamp=tS; name=n; price=p;
-    }
-    
-    public Date getTimeStamp() {
-        return timeStamp;
-    }
-    
-    public String getName(){
-        return name;
-    }
-    
-    public double getPrice() {
-        return price;
-    }
-
-    @Override
-    public String toString(){
-        return "Data Point[ timeStamp: "+timeStamp+" name: "+name+" price: "+price+"$/MWH ]";
     }
 }

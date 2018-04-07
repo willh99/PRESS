@@ -34,7 +34,7 @@ public class monitorStatus extends TimerTask {
             sleep(20);
             client.checkStatus();
             sleep(20);
-            client.getFile("profit.txt");
+            client.getFile("profit.json");
         } catch (InterruptedException ex) {
             Logger.getLogger(monitorStatus.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -34,6 +34,8 @@ public class Main {
          */
         //Scheduler.testTiming();
         Scheduler.getStatus();
+        Scheduler.fetchData();
+        Scheduler.priceAnalysis();
     }
     
 }

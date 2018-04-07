@@ -41,13 +41,19 @@ public class parseJSON {
         JSONObject obj = new JSONObject();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss z");
         Date d = new Date();
+        String filename;
+        
+        if(type.equals("Algorithmic"))
+            filename = "algorithmstatus.json";
+        else
+            filename = "appstatus.json";
 
         // Put timestamp into status JSON
         obj.put("Timestamp", dateFormat.format(d));
         obj.put("Buy", Buy);
         obj.put("Sell", Sell);
 
-        try (FileWriter file = new FileWriter("JSON_Objects/appstatus.json")) {
+        try (FileWriter file = new FileWriter("JSON_Objects/" + filename)) {
                 file.write(obj.toJSONString());
                 file.flush();
             } catch (IOException e) {
@@ -148,7 +154,30 @@ public class parseJSON {
         return Jarray;
     }
 
-    public static void readJSONObject(String filename){
+    public static JSONObject getJSONObject(String filename)
+    {
+        if(!filename.contains(".json")){
+            System.out.println("Cannot load non-json file to JSONObject");
+            return null;
+        }
         
+        File file = new File("JSON_Objects/" + filename);
+        JSONObject obj =  null;
+        
+        if(!file.exists()){
+            System.out.println("File \"" +filename+ "\" does not exist. Aborting");
+            return obj;
+        }
+        
+        JSONParser parser = new JSONParser();
+        try{
+            obj = (JSONObject) parser.parse(new FileReader(file));
+        } catch (IOException | ParseException ex){
+            System.out.println(ex.getMessage());
+            
+        }
+        
+        System.out.println("HELLO!");
+        return obj;
     }
 }

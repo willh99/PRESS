@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -59,7 +60,8 @@ public class PRESS_hud extends javax.swing.JFrame {
         homePanel = new javax.swing.JPanel();
         buyButton = new javax.swing.JButton();
         sellButton = new javax.swing.JButton();
-        Status_label = new javax.swing.JLabel();
+        modeLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
         Logo = new javax.swing.JLabel();
         downloadButton = new javax.swing.JButton();
         haltButton = new javax.swing.JButton();
@@ -183,10 +185,15 @@ public class PRESS_hud extends javax.swing.JFrame {
             }
         });
 
-        Status_label.setBackground(new java.awt.Color(255, 255, 255));
-        Status_label.setFont(new java.awt.Font("HP Simplified Light", 1, 18)); // NOI18N
-        Status_label.setForeground(new java.awt.Color(255, 255, 255));
-        Status_label.setText("System Status: Use Algorithm");
+        modeLabel.setBackground(new java.awt.Color(255, 255, 255));
+        modeLabel.setFont(new java.awt.Font("HP Simplified Light", 1, 18)); // NOI18N
+        modeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        modeLabel.setText("Current Mode: Use Algorithm");
+
+        statusLabel.setBackground(new java.awt.Color(255, 255, 255));
+        statusLabel.setFont(new java.awt.Font("HP Simplified Light", 1, 18)); // NOI18N
+        statusLabel.setForeground(new java.awt.Color(255, 255, 255));
+        statusLabel.setText("System Status: Use Algorithm");
 
         Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LOGO.000.jpg"))); // NOI18N
         Logo.setText("jLabel2");
@@ -238,7 +245,9 @@ public class PRESS_hud extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Logo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(Status_label, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
+                        .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(modeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                            .addComponent(statusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)))
                     .addGroup(homePanelLayout.createSequentialGroup()
                         .addComponent(downloadButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -257,9 +266,11 @@ public class PRESS_hud extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Status_label, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(modeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addGroup(homePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buyButton)
@@ -515,7 +526,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(true, false, "ManualOverride");
-            Status_label.setText("System Status: Buy");
+            modeLabel.setText("Current Mode: Buy");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -530,7 +541,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(false, true, "ManualOverride");
-            Status_label.setText("System Status: Sell");
+            modeLabel.setText("Current Mode: Sell");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -559,7 +570,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(false, false, "ManualOverride");
-            Status_label.setText("System Status: Halt");
+            modeLabel.setText("Current Mode: Halt");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -618,7 +629,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(true, true, "ManualOverride");
-            Status_label.setText("System Status: Automatic");
+            modeLabel.setText("Current Mode: Use Algorithm");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -627,13 +638,13 @@ public class PRESS_hud extends javax.swing.JFrame {
     }//GEN-LAST:event_useAlgorithmBtnActionPerformed
 
     private void systemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemButtonActionPerformed
-        // TODO add your handling code here:
+        systemPanel.removeAll();
         JPanel charge = processData.showChargeLevel();
         
         GridBagConstraints c =  new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0; c.gridy = 0;
-        c.gridwidth = 1; c.gridheight = 2;
+        c.gridwidth = 3; c.gridheight = 2;
         c.weightx = .25; c.weighty = .25;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         
@@ -642,14 +653,34 @@ public class PRESS_hud extends javax.swing.JFrame {
         CardLayout cL = (CardLayout) mainPanel.getLayout();
         cL.show(mainPanel, "card5");
         
-        JLabel profitLabel = new JLabel("Estimated Profit: $" + processData.getProfitMargin());
+        // Get array of profit, buy/sell time from profit.json
+        double[] profit = processData.getProfitMargin();
+        
+        JLabel profitLabel = new JLabel("Estimated Profit: $" + profit[0]);
         profitLabel.setFont(new Font("Serif", Font.PLAIN, 28));
         profitLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
+        
+        JLabel sellTimeLabel = new JLabel("Sell Time: " + profit[1] + " Seconds");
+        sellTimeLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+        sellTimeLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
+        
+        JLabel buyTimeLabel = new JLabel("Buy Time: " + profit[2] + " Seconds");
+        buyTimeLabel.setFont(new Font("Serif", Font.PLAIN, 28));
+        buyTimeLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
+        
+        JPanel profitPanel = new JPanel();
+        profitPanel.setLayout(new BoxLayout(profitPanel, BoxLayout.PAGE_AXIS));
+        profitPanel.setBackground(systemPanel.getBackground());
+        
         c.fill = GridBagConstraints.NONE;
         c.gridx = 0; c.gridy = 2;
-        c.gridwidth = 1; c.gridheight = 1;
+        c.gridwidth = 3; c.gridheight = 1;
         c.weightx = 0; c.weighty = .1;
-        systemPanel.add(profitLabel, c);
+        systemPanel.add(profitPanel, c);
+        
+        profitPanel.add(profitLabel);
+        profitPanel.add(sellTimeLabel);
+        profitPanel.add(buyTimeLabel);
     }//GEN-LAST:event_systemButtonActionPerformed
 
     
@@ -696,7 +727,6 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JMenu EditMenuItem;
     private javax.swing.JMenuItem HelpMenuItem;
     private javax.swing.JLabel Logo;
-    private javax.swing.JLabel Status_label;
     private javax.swing.JMenu aboutMenu;
     private javax.swing.JButton buyButton;
     private javax.swing.JMenuItem connectionMenuItem;
@@ -716,12 +746,14 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JMenuBar mainMenuBar;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JLabel modeLabel;
     protected javax.swing.JPanel navPanel;
     private javax.swing.JScrollPane priceScrollPane;
     private javax.swing.JPanel priceTabGraphPanel;
     private javax.swing.JPanel priceTabPanel;
     private javax.swing.JButton sellButton;
     private javax.swing.JMenu settingsMenu;
+    protected javax.swing.JLabel statusLabel;
     private javax.swing.JButton systemButton;
     protected javax.swing.JPanel systemPanel;
     private javax.swing.JScrollPane tempScrollPane;

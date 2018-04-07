@@ -10,8 +10,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-import Tasks.dataFetch;
-import Tasks.monitorStatus;
+import Tasks.*;
 
 /**
  *
@@ -22,10 +21,11 @@ public class Scheduler {
     private static Timer testTimer;
     private static Timer statusTimer;
     private static Timer dataTimer;
+    private static Timer analysisTimer;
     
+    // Schedule timer to draw price data every day at midnight
     public static void fetchData()
     {
-        // Schedule timer to draw price data every day at midnight
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
         today.set(Calendar.MINUTE, 0);
@@ -35,11 +35,18 @@ public class Scheduler {
         dataTimer.schedule(new dataFetch(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
     
+    // Schedule timer to try and fetch sensor data from server every minute
     public static void getStatus()
     {
-        // Schedule timer to try and fetch sensor data from server every minute
         statusTimer = new Timer();
-        statusTimer.scheduleAtFixedRate(new monitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 30000);
+        statusTimer.scheduleAtFixedRate(new monitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 60000);
+    }
+    
+    // Schedule timer to do price analysis and generate status every three minutes
+    public static void priceAnalysis()
+    {
+        analysisTimer = new Timer();
+        analysisTimer.scheduleAtFixedRate(new calculateStatus(), 0, 180000);
     }
     
     public static void testTiming()
@@ -67,6 +74,9 @@ public class Scheduler {
                 testTimer.cancel();
                 testTimer.purge();
                 break;
+            case "ANALYSIS":
+                analysisTimer.cancel();
+                analysisTimer.purge();
             default:
                 break;
         }
@@ -92,6 +102,10 @@ public class Scheduler {
                 testTimer.purge();
                 testTiming();
                 break;
+            case "ANALYSIS":
+                analysisTimer.cancel();
+                analysisTimer.purge();
+                priceAnalysis();
             default:
                 break;
         }
