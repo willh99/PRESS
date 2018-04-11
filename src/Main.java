@@ -21,7 +21,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // Set Global variables //
-        Globals.setHostName("10.199.41.199");
+        Globals.setHostName("10.199.41.127");
         Globals.setHostPort(5555);
         Globals.setTimeout(4000);
 

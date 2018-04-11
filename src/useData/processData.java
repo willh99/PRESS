@@ -9,10 +9,6 @@ import java.io.*;
 import static java.lang.Thread.sleep;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,9 +88,9 @@ public class processData {
         return chPanel;
     }
     
-    public static JPanel plotTemp()
+    public static JPanel plotTemp(String filename)
     {
-        Iterator Jarray = parseJSON.readJSONArray("t_log.json");
+        Iterator Jarray = parseJSON.readJSONArray(filename);
         TimeSeries tSeries = new TimeSeries("System Temperature");
         SimpleDateFormat sdp = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
         JSONObject obj = null;
@@ -102,20 +98,22 @@ public class processData {
         
         // Iterate through JSON array and extract temp values
         // and timestamp.
-        while(Jarray.hasNext()){
-            obj = (JSONObject) Jarray.next();
-            try {
-                Date d = sdp.parse((String) obj.get("Timestamp"));
-                tSeries.add(new Second(d), (double) obj.get("temperature"));
-            } catch (ParseException ex) {
-                System.out.println(ex.getMessage());
-                //Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
+        if(Jarray != null){
+            while(Jarray.hasNext()){
+                obj = (JSONObject) Jarray.next();
+                try {
+                    Date d = sdp.parse((String) obj.get("Timestamp"));
+                    tSeries.add(new Second(d), (double) obj.get("temperature"));
+                } catch (ParseException ex) {
+                    System.out.println(ex.getMessage());
+                    //Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                // =========================================================================
+                // REMEMBER TO DELETE THIS WHEN TEMP JSON IS CREATED WITH 1 SECOND INTERVALS
+                // =========================================================================
+                if(Jarray.hasNext())
+                    Jarray.next();
             }
-            // =========================================================================
-            // REMEMBER TO DELETE THIS WHEN TEMP JSON IS CREATED WITH 1 SECOND INTERVALS
-            // =========================================================================
-            if(Jarray.hasNext())
-                Jarray.next();
         }
         
         // Set day string to show day which data was collected

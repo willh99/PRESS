@@ -84,6 +84,10 @@ public class PRESS_hud extends javax.swing.JFrame {
         tempScrollPane = new javax.swing.JScrollPane();
         tempTable = new javax.swing.JTable();
         tempTabGraphPanel = new javax.swing.JPanel();
+        battTempTabPanel = new javax.swing.JPanel();
+        battTempScrollPane = new javax.swing.JScrollPane();
+        battTempTable = new javax.swing.JTable();
+        battTempTabGraphPanel = new javax.swing.JPanel();
         systemPanel = new javax.swing.JPanel();
         mainMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -432,6 +436,45 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     dataTabbedPane.addTab("Tempurature Data", tempTabPanel);
 
+    battTempTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    battTempTable.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+
+        },
+        new String [] {
+
+        }
+    ){public boolean isCellEditable(int row, int column){
+        return false;}
+    }
+    );
+    battTempScrollPane.setViewportView(battTempTable);
+
+    battTempTabGraphPanel.setLayout(new java.awt.GridBagLayout());
+
+    javax.swing.GroupLayout battTempTabPanelLayout = new javax.swing.GroupLayout(battTempTabPanel);
+    battTempTabPanel.setLayout(battTempTabPanelLayout);
+    battTempTabPanelLayout.setHorizontalGroup(
+        battTempTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, battTempTabPanelLayout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(battTempTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(battTempTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(battTempScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE))
+            .addContainerGap())
+    );
+    battTempTabPanelLayout.setVerticalGroup(
+        battTempTabPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, battTempTabPanelLayout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(battTempTabGraphPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(battTempScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap())
+    );
+
+    dataTabbedPane.addTab("Battery Tempurature", battTempTabPanel);
+
     javax.swing.GroupLayout dataPanelLayout = new javax.swing.GroupLayout(dataPanel);
     dataPanel.setLayout(dataPanelLayout);
     dataPanelLayout.setHorizontalGroup(
@@ -608,13 +651,16 @@ public class PRESS_hud extends javax.swing.JFrame {
         processData.populateTable("TodaysData.csv", dataTable);
         processData.populateTableWithJSON("v_log.json", voltsTable);
         processData.populateTableWithJSON("t_log.json", tempTable);
+        processData.populateTableWithJSON("bt_log.json", battTempTable);
         
         priceTabGraphPanel.removeAll();
         voltsTabGraphPanel.removeAll();
         tempTabGraphPanel.removeAll();
+        battTempTabGraphPanel.removeAll();
         JPanel priceG = processData.plotPriceData();
         JPanel voltG = processData.plotPower();
-        JPanel tempG = processData.plotTemp();
+        JPanel tempG = processData.plotTemp("t_log.json");
+        JPanel btempG = processData.plotTemp("bt_log.json");
         
         GridBagConstraints c =  new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -623,6 +669,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         priceTabGraphPanel.add(priceG, c);
         voltsTabGraphPanel.add(voltG, c);
         tempTabGraphPanel.add(tempG, c);
+        battTempTabGraphPanel.add(btempG, c);
         
         CardLayout cL = (CardLayout) mainPanel.getLayout();
         cL.show(mainPanel, "card4");                    
@@ -760,6 +807,10 @@ public class PRESS_hud extends javax.swing.JFrame {
     private javax.swing.JLabel Logo;
     private javax.swing.JMenu aboutMenu;
     protected javax.swing.JLabel algorithmLabel;
+    private javax.swing.JScrollPane battTempScrollPane;
+    private javax.swing.JPanel battTempTabGraphPanel;
+    private javax.swing.JPanel battTempTabPanel;
+    private javax.swing.JTable battTempTable;
     private javax.swing.JButton buyButton;
     private javax.swing.JMenuItem connectionMenuItem;
     private javax.swing.JButton dataButton;

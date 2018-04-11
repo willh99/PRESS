@@ -62,14 +62,14 @@ public class UpdateVis {
         boolean sell = (boolean) obj.get("Sell");
         
         if(buy && !sell){
-            label.setText("System Status: Buy");
+            label.setText("Algorthm Status: Buy");
             return;
         }
         else if(!buy && sell){
-            label.setText("System Status: Sell");
+            label.setText("Algorthm Status: Sell");
             return;
         }
         else
-            label.setText("System Status: Halt");
+            label.setText("Algorthm Status: Halt");
     }
 }
