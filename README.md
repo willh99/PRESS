@@ -1,7 +1,7 @@
-[logo]
+![logo]
 
 # PRESS
-###Price Reactive Energy Storage System User Interface
+### Price Reactive Energy Storage System User Interface
 
 This is the user application for the Price Reactive Energy Storage System (PRESS) created using the Java Swing toolkit in the Netbeans IDE.
 
@@ -19,4 +19,4 @@ Additionally, the user application will be able to periodically pull princing da
 * Other fun stuff - Features are currently being added to increase the user experience, such as custom look & feel settings
 
 
-[logo]: https://github.com/willh99/PRESS/blob/master/src/images/LOGO.000.jpg
+![logo]: https://github.com/willh99/PRESS/blob/master/src/images/LOGO.000.jpg
