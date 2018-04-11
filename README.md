@@ -1,4 +1,4 @@
-![logo]
+![logo](https://github.com/willh99/PRESS/blob/master/src/images/LOGO.000.jpg)
 
 # PRESS
 ### Price Reactive Energy Storage System User Interface
@@ -17,6 +17,3 @@ Additionally, the user application will be able to periodically pull princing da
 * Manual Override of RPi - The user of the PRESS app can send a manual override JSON to override the current status of the controller (unless temperature/voltage readings dictate the it is unsafe to do so). A client connection is be formed on a seporate thread when this occurs and a new appstatus.json is sent over the network
 * Automatic Data Fetch -  Electric pricing data (currently from the New York Independent Service Operator - NYISO) is fetch over Internet connection and used for data visualisation and to determine whether the system should buy/sell power at any given time of day
 * Other fun stuff - Features are currently being added to increase the user experience, such as custom look & feel settings
-
-
-![logo]: https://github.com/willh99/PRESS/blob/master/src/images/LOGO.000.jpg
