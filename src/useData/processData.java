@@ -13,7 +13,10 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.logging.Level;
@@ -58,11 +61,6 @@ public class processData {
             } catch (ParseException ex) {
                 System.out.println(ex.getMessage());
             }
-            // ============================================================================
-            // REMEMBER TO DELETE THIS WHEN Voltage JSON IS CREATED WITH 1 SECOND INTERVALS
-            // ============================================================================
-            if(Jarray.hasNext())
-                Jarray.next();
         }
         
         // Set day string to show day which data was collected
@@ -108,11 +106,6 @@ public class processData {
                     System.out.println(ex.getMessage());
                     //Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                // =========================================================================
-                // REMEMBER TO DELETE THIS WHEN TEMP JSON IS CREATED WITH 1 SECOND INTERVALS
-                // =========================================================================
-                if(Jarray.hasNext())
-                    Jarray.next();
             }
         }
         
@@ -307,30 +300,52 @@ public class processData {
         max = 0.7*max;
         min = 0.3*max;
         
+        DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        Date timestamp =null;
+        double currentPrice = 0;
+        
         // Create a status JSON depending on the current state of 
         // the system and the change in the data.
         // e.g. if currently buying and price goes above 70% of maximum,
         //      then generate a 'sell' (buy=false) JSON
         for(int i=0; i<dataList.size(); i++){
-            if(dataList.get(i).getPrice() > max && buy){
-                buy = false;
-                sell = true;
-                parseJSON.createStatusJSON(buy, sell, "Algorithmic");
-            }
-            else if(dataList.get(i).getPrice() < min && sell){
-                buy = true;
-                sell = false;
-                parseJSON.createStatusJSON(buy, sell, "Algorithmic");
-            }
-            try {
-                sleep(1);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+            // Get Integer values for the current time of day and the
+            // time of day of a datapoint timestamp
+            timestamp = dataList.get(i).getTimeStamp();
+            LocalDateTime priceDate = LocalDateTime.parse(timestamp.toString(), formatter);
+            LocalDateTime myDate = LocalDateTime.now();
+            
+            if(myDate.getHour() >= priceDate.getHour()){
+                if(myDate.getMinute() >= priceDate.getMinute()){
+                    
+                    currentPrice = dataList.get(i).getPrice();
+                    
+                    if(currentPrice > max && !sell){
+                        buy = false;
+                        sell = true;
+                        parseJSON.createStatusJSON(buy, sell, "Algorithmic");
+                    }
+                    else if(currentPrice < min && !buy){
+                        buy = true;
+                        sell = false;
+                        parseJSON.createStatusJSON(buy, sell, "Algorithmic");
+                    }
+                    try {
+                        sleep(1);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(processData.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } else {break;}
         }
         
         if(!buy && !sell)
             parseJSON.createStatusJSON(buy, sell, "Algorithmic");
+        
+        System.out.println("\nBuy and Sell are: " + buy + " " + sell);
+        System.out.println("Current Price for "+ timestamp + " is: $" + currentPrice + "\n");
     }
     
     // Populates a table with the contents of a .csv file
@@ -389,7 +404,7 @@ public class processData {
                 model.addRow(line);
             }
         }
-        else if(filename.equals("t_log.json"))
+        else if(filename.equals("t_log.json") || filename.equals("bt_log.json"))
         {
             String[] tableLine = {"Timestamp", "temperature"};
             model.setColumnIdentifiers(tableLine);
@@ -417,7 +432,7 @@ public class processData {
         
         try{
             profit[0] = (double) obj.get("profit");
-            profit[1] = (long) obj.get("Sell Time");
+            profit[1] = (double) obj.get("Sell Time");
             profit[2] = (double) obj.get("Buy Time");
         } catch (Exception e){
             e.printStackTrace();

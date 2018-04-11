@@ -13,9 +13,6 @@ import javax.swing.JLabel;
 import useData.parseJSON;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-import useData.ClientConnect;
-import useData.Globals;
 import useData.SendAppStatus;
 import useData.processData;
 
@@ -194,7 +191,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         modeLabel.setBackground(new java.awt.Color(255, 255, 255));
         modeLabel.setFont(new java.awt.Font("HP Simplified Light", 1, 18)); // NOI18N
         modeLabel.setForeground(new java.awt.Color(255, 255, 255));
-        modeLabel.setText("Current Mode: Use Algorithm");
+        modeLabel.setText("Selected Mode: Use Algorithm");
 
         statusLabel.setBackground(new java.awt.Color(255, 255, 255));
         statusLabel.setFont(new java.awt.Font("HP Simplified Light", 1, 18)); // NOI18N
@@ -594,7 +591,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(true, false, "ManualOverride");
-            modeLabel.setText("Current Mode: Buy");
+            modeLabel.setText("Selected Mode: Buy");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -609,7 +606,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(false, true, "ManualOverride");
-            modeLabel.setText("Current Mode: Sell");
+            modeLabel.setText("Selected Mode: Sell");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -638,7 +635,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(false, false, "ManualOverride");
-            modeLabel.setText("Current Mode: Halt");
+            modeLabel.setText("Selected Mode: Halt");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -701,7 +698,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             parseJSON.createStatusJSON(true, true, "ManualOverride");
-            modeLabel.setText("Current Mode: Use Algorithm");
+            modeLabel.setText("Selected Mode: Use Algorithm");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
@@ -728,15 +725,15 @@ public class PRESS_hud extends javax.swing.JFrame {
         // Get array of profit, buy/sell time from profit.json
         double[] profit = processData.getProfitMargin();
         
-        JLabel profitLabel = new JLabel("Estimated Profit: $" + profit[0]);
+        JLabel profitLabel = new JLabel(String.format("Estimated Profit: $%.4f", profit[0]));
         profitLabel.setFont(new Font("Serif", Font.PLAIN, 28));
         profitLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
         
-        JLabel sellTimeLabel = new JLabel("Sell Time: " + profit[1] + " Seconds");
+        JLabel sellTimeLabel = new JLabel(String.format("Sell Time: %.1f Seconds", profit[1]));
         sellTimeLabel.setFont(new Font("Serif", Font.PLAIN, 28));
         sellTimeLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
         
-        JLabel buyTimeLabel = new JLabel("Buy Time: " + profit[2] + " Seconds");
+        JLabel buyTimeLabel = new JLabel(String.format("Buy Time: %.1f Seconds", profit[2]));
         buyTimeLabel.setFont(new Font("Serif", Font.PLAIN, 28));
         buyTimeLabel.setBorder(BorderFactory.createSoftBevelBorder(0));
         

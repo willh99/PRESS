@@ -31,7 +31,7 @@ public class UpdateVis {
         JSONObject obj = parseJSON.getJSONObject("home_status.json");
         
         if(obj == null){
-            label.setText("System Status: Disconnected");
+            label.setText("Controller Status: Disconnected");
             return;
         }
         
@@ -39,11 +39,11 @@ public class UpdateVis {
         boolean sell = (boolean) obj.get("Sell");
         
         if(buy && !sell){
-            label.setText("System Status: Buy");
+            label.setText("Controller Status: Buy");
             return;
         }
         else if(!buy && sell){
-            label.setText("System Status: Sell");
+            label.setText("Controler Status: Sell");
             return;
         }
                 

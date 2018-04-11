@@ -11,8 +11,11 @@ package useData;
  * @author will
  */
 import java.io.*;
+import static java.lang.Thread.sleep;
 import java.net.*;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientConnect
 {
@@ -226,6 +229,16 @@ public class ClientConnect
                 return;
             }
             send("TRANSFER " + filename);
+            
+            // Sleep to give network time to recieve TRANSFER command
+            // and set up to recieve incoming file
+            try {
+                sleep(5);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
             try (FileInputStream fis = new FileInputStream(file)) {
                 int count;
                 byte[] buffer = new byte[1024];
