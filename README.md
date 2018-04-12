@@ -11,6 +11,8 @@ controls an Inverter and charger capabile of buying and selling energy to the gr
 
 Additionally, the user application will be able to periodically pull princing data from the Internet when connected, show the user data relevant to the operation of the PRESS system, and manually override the operating status of the embedded device.
 
+![Screenshot](https://github.com/willh99/PRESS/blob/master/src/images/Capture.PNG)
+
 ### Features
 * Custom Client designed specifically for connection to the PRESS RPi server.  The PRESS app fetches voltage, temperature, profit, and status data periodically (currently every 30 seconds) from the server if a connection is possible
 * Data Visualisation - Parses data JSONs created by the RPi controller and plots them in Jfreechart graphs and displays them in JTables. Data is fetched from the server every 30 seconds
