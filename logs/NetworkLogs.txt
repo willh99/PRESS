@@ -1,0 +1,47 @@
+Apr 13, 2018 12:08:41 PM useData.ClientConnect <init>
+SEVERE: ClientConnect
+java.net.SocketTimeoutException: connect timed out
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at useData.ClientConnect.<init>(ClientConnect.java:51)
+	at Tasks.MonitorStatus.<init>(MonitorStatus.java:37)
+	at useData.Scheduler.getStatus(Scheduler.java:57)
+	at Main.main(Main.java:52)
+
+Apr 13, 2018 12:09:12 PM useData.ClientConnect <init>
+SEVERE: ClientConnect
+java.net.SocketTimeoutException: connect timed out
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at useData.ClientConnect.<init>(ClientConnect.java:51)
+	at Tasks.MonitorStatus.<init>(MonitorStatus.java:37)
+	at useData.Scheduler.getStatus(Scheduler.java:57)
+	at Main.main(Main.java:52)
+
+Apr 13, 2018 12:09:49 PM useData.ClientConnect <init>
+SEVERE: ClientConnect
+java.net.SocketTimeoutException: connect timed out
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at useData.ClientConnect.<init>(ClientConnect.java:51)
+	at useData.SendAppStatus.run(SendAppStatus.java:41)
+	at java.lang.Thread.run(Thread.java:748)
+

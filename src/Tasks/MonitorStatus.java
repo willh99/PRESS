@@ -14,41 +14,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package useData;
+package Tasks;
 
 import java.io.IOException;
+import static java.lang.Thread.sleep;
+import java.net.InetAddress;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import useData.ClientConnect;
+import useData.Globals;
 
 /**
  *
  * @author will
- * 
- * This class provides a multi-threaded approach to sending
- * a file over the network. This is useful when the user
- * manually overrides the status of the system. This way,
- * manual overrides to not freeze the GUI when waiting to
- * connect.
  */
-public class SendAppStatus implements Runnable {
+public class MonitorStatus extends TimerTask {
 
-    private ClientConnect c;
-    private Thread t;
+    ClientConnect client;
+    
+    public MonitorStatus(InetAddress host, int port) throws IOException{
+        client = new ClientConnect(host, port, Globals.getTimeout());
+    }
     
     @Override
     public void run() {
         try {
-            c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            c.sendFile("appstatus.json");
-        } catch (IOException ex) {
-            Logger.getLogger(SendAppStatus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void start() {
-        if(t == null){
-            t = new Thread(this);
-            t.start();
+            client.getFile("v_log.json");
+            sleep(20);
+            client.getFile("t_log.json");
+            sleep(20);
+            client.checkStatus();
+            sleep(20);
+            client.getFile("bt_log.json");
+            sleep(20);
+            client.getFile("profit.json");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MonitorStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

@@ -22,6 +22,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import Tasks.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,21 +46,25 @@ public class Scheduler {
         today.set(Calendar.SECOND, 0);
         
         dataTimer = new Timer();
-        dataTimer.schedule(new dataFetch(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+        dataTimer.schedule(new DataFetch(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
     }
     
     // Schedule timer to try and fetch sensor data from server every minute
     public static void getStatus()
     {
         statusTimer = new Timer();
-        statusTimer.scheduleAtFixedRate(new monitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 60000);
+        try {
+            statusTimer.scheduleAtFixedRate(new MonitorStatus(Globals.getHostName(), Globals.getHostPort()), 0, 60000);
+        } catch (IOException ex) {
+            Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     // Schedule timer to do price analysis and generate status every three minutes
     public static void priceAnalysis()
     {
         analysisTimer = new Timer();
-        analysisTimer.scheduleAtFixedRate(new calculateStatus(), 0, 180000);
+        analysisTimer.scheduleAtFixedRate(new CalculateStatus(), 0, 180000);
     }
     
     public static void testTiming()

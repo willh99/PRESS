@@ -24,8 +24,10 @@ import java.io.*;
 import static java.lang.Thread.sleep;
 import java.net.*;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class ClientConnect
 {
@@ -38,8 +40,9 @@ public class ClientConnect
     private PrintStream pout = null;
     private Scanner scan = null;
 
-    public ClientConnect(InetAddress address, int p, int t) 
+    public ClientConnect(InetAddress address, int p, int t) throws IOException 
     {
+        LoggerSetup();
         addr = new InetSocketAddress(address, p);
         timeout = t;
         try {
@@ -51,10 +54,33 @@ public class ClientConnect
             dos = new DataOutputStream(socket.getOutputStream());
             pout = new PrintStream(socket.getOutputStream());
         } catch (IOException ex) {
-            //Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, "ClientConnect", ex);
             System.out.println(ex.getMessage() + "\n");
-            //System.exit(1);
         }
+    }
+    
+    // Set up the network logger
+    private void LoggerSetup() throws IOException{
+        Logger LOGGER = Logger.getLogger(ClientConnect.class.getName());
+        
+        File path = new File("logs/");
+        File file = new File(path, "NetworkLogs.txt");
+        
+        path.mkdirs();
+        if(!file.exists())
+            file.createNewFile();
+        
+        FileHandler fileHandler;
+        SimpleFormatter formatter;
+                
+        try {
+            fileHandler = new FileHandler(file.getPath(), true);
+            LOGGER.addHandler(fileHandler);
+            formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+        } catch (IOException | SecurityException ex) {
+            Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }
 
     // Send a string. Used in chat and to initialized
@@ -104,9 +130,8 @@ public class ClientConnect
                 dos = new DataOutputStream(socket.getOutputStream());
                 pout = new PrintStream(socket.getOutputStream());
             } catch (IOException ex) {
-                //Logger.getLogger(Client1.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.getMessage());
-                //System.exit(1);
+                Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, "ClientConnect", ex);
+                //System.out.println(ex.getMessage());
             }
         }
         else if((socket.isClosed() || !socket.isConnected()) && (addr!=null) && (addr.getPort()>0) ){
@@ -136,8 +161,7 @@ public class ClientConnect
             else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
-            System.out.println("Failed to connect to server");
-            System.out.println(ex.getMessage());
+            System.out.println("Failed to connect to server: " + ex.getMessage());
             return;
         }
         String response = "s";
@@ -166,8 +190,7 @@ public class ClientConnect
             else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
-            System.out.println("Failed to connect to server");
-            System.out.println(ex.getMessage());
+            System.out.println("Failed to connect to server: " + ex.getMessage());
             return;
         }
         
@@ -205,7 +228,7 @@ public class ClientConnect
             closeConnection();
             
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, "ClientConnect", e);
         }
         
     }
@@ -220,8 +243,7 @@ public class ClientConnect
             else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
-            System.out.println("Failed to connect to server");
-            System.out.println(ex.getMessage());
+            System.out.println("Failed to connect to server: " + ex.getMessage());
             return;
         }
         
@@ -261,7 +283,8 @@ public class ClientConnect
             closeConnection();
             
         } catch(IOException e){
-            e.printStackTrace();
+            Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, "ClientConnect", e);
+            //e.printStackTrace();
         }
     }
     
@@ -275,8 +298,7 @@ public class ClientConnect
             else if(socket.isClosed() || !socket.isConnected())
                 return;
         } catch (IOException ex) {
-            System.out.println("Failed to connect to server");
-            System.out.println(ex.getMessage());
+            System.out.println("Failed to connect to server: " + ex.getMessage());
             return;
         }
         
@@ -309,7 +331,8 @@ public class ClientConnect
             closeConnection();
             
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, "ClientConnect", e);
+            //e.printStackTrace();
         }
     }
     

@@ -18,7 +18,7 @@ package Visual;
 
 import javax.swing.JLabel;
 import org.json.simple.JSONObject;
-import useData.parseJSON;
+import useData.ParseJSON;
 
 /**
  *
@@ -28,7 +28,7 @@ public class UpdateVis {
     
     public static void updateSysStatus(JLabel label)
     {
-        JSONObject obj = parseJSON.getJSONObject("home_status.json");
+        JSONObject obj = ParseJSON.getJSONObject("home_status.json");
         
         if(obj == null){
             label.setText("Controller Status: Disconnected");
@@ -51,7 +51,7 @@ public class UpdateVis {
     
     public static void updateAlgorithmStatus(JLabel label)
     {
-        JSONObject obj = parseJSON.getJSONObject("algorithm_status.json");
+        JSONObject obj = ParseJSON.getJSONObject("algorithm_status.json");
         
         if(obj == null){
             label.setText("Algorthm Status: N/A");

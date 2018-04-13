@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import Utility.PRESSLogger;
 import Visual.PRESS_hud;
+import java.io.IOException;
 import useData.Scheduler;
 import useData.Globals;
 
@@ -27,8 +29,13 @@ public class Main {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+                
+        // Set behavior of Global Logger //
+        PRESSLogger.setup();
+
         // Set Global variables //
         Globals.setHostName("10.199.41.127");
         Globals.setHostPort(5555);

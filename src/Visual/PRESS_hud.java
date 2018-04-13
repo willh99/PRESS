@@ -26,11 +26,11 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import useData.parseJSON;
+import useData.ParseJSON;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import useData.SendAppStatus;
-import useData.processData;
+import useData.ProcessData;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -597,7 +597,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void AboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutMenuItemActionPerformed
         // Just some info about the project
-        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Beta 1.2", "About", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Welcome to P.R.E.S.S.\n Version: Beta 1.4", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_AboutMenuItemActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
@@ -606,7 +606,7 @@ public class PRESS_hud extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
-            parseJSON.createStatusJSON(true, false, "ManualOverride");
+            ParseJSON.createStatusJSON(true, false, "ManualOverride");
             modeLabel.setText("Selected Mode: Buy");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
@@ -621,7 +621,7 @@ public class PRESS_hud extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
-            parseJSON.createStatusJSON(false, true, "ManualOverride");
+            ParseJSON.createStatusJSON(false, true, "ManualOverride");
             modeLabel.setText("Selected Mode: Sell");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
@@ -637,7 +637,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         if(response == JOptionPane.YES_OPTION)
         {
             try {
-                processData.downloadData();
+                ProcessData.downloadData();
             } catch (IOException ex) {
                 Logger.getLogger(PRESS_hud.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -650,7 +650,7 @@ public class PRESS_hud extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
-            parseJSON.createStatusJSON(false, false, "ManualOverride");
+            ParseJSON.createStatusJSON(false, false, "ManualOverride");
             modeLabel.setText("Selected Mode: Halt");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
@@ -661,19 +661,19 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void dataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataButtonActionPerformed
         // Go to the data panel and display the contents of the Today's Data CSV
-        processData.populateTable("TodaysData.csv", dataTable);
-        processData.populateTableWithJSON("v_log.json", voltsTable);
-        processData.populateTableWithJSON("t_log.json", tempTable);
-        processData.populateTableWithJSON("bt_log.json", battTempTable);
+        ProcessData.populateTable("TodaysData.csv", dataTable);
+        ProcessData.populateTableWithJSON("v_log.json", voltsTable);
+        ProcessData.populateTableWithJSON("t_log.json", tempTable);
+        ProcessData.populateTableWithJSON("bt_log.json", battTempTable);
         
         priceTabGraphPanel.removeAll();
         voltsTabGraphPanel.removeAll();
         tempTabGraphPanel.removeAll();
         battTempTabGraphPanel.removeAll();
-        JPanel priceG = processData.plotPriceData();
-        JPanel voltG = processData.plotPower();
-        JPanel tempG = processData.plotTemp("t_log.json");
-        JPanel btempG = processData.plotTemp("bt_log.json");
+        JPanel priceG = ProcessData.plotPriceData();
+        JPanel voltG = ProcessData.plotPower();
+        JPanel tempG = ProcessData.plotTemp("t_log.json");
+        JPanel btempG = ProcessData.plotTemp("bt_log.json");
         
         GridBagConstraints c =  new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -713,7 +713,7 @@ public class PRESS_hud extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if(response == JOptionPane.YES_OPTION)
         {
-            parseJSON.createStatusJSON(true, true, "ManualOverride");
+            ParseJSON.createStatusJSON(true, true, "ManualOverride");
             modeLabel.setText("Selected Mode: Use Algorithm");
             //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             //c.sendFile("appstatus.json");
@@ -724,7 +724,7 @@ public class PRESS_hud extends javax.swing.JFrame {
 
     private void systemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_systemButtonActionPerformed
         systemPanel.removeAll();
-        JPanel charge = processData.showChargeLevel();
+        JPanel charge = ProcessData.showChargeLevel();
         
         GridBagConstraints c =  new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -739,7 +739,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         cL.show(mainPanel, "card5");
         
         // Get array of profit, buy/sell time from profit.json
-        double[] profit = processData.getProfitMargin();
+        double[] profit = ProcessData.getProfitMargin();
         
         JLabel profitLabel = new JLabel(String.format("Estimated Profit: $%.4f", profit[0]));
         profitLabel.setFont(new Font("Serif", Font.PLAIN, 28));
