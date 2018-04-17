@@ -53,8 +53,11 @@ public class PRESSLogger {
             rootLogger.removeHandler(handlers[0]);
         }
 
+        
+        // Set logger level to SEVERE (least amount to data written)
+        // Set filehandler to append to 1 file of max size 20kB
         logger.setLevel(Level.SEVERE);
-        fileHandler = new FileHandler(file.getPath(), true);
+        fileHandler = new FileHandler(file.getPath(), 20*1024, 1, true);
         logger.addHandler(fileHandler);
 
         // create a TXT formatter

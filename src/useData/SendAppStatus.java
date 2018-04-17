@@ -17,6 +17,7 @@
 package useData;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,6 +41,7 @@ public class SendAppStatus implements Runnable {
         try {
             c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
             c.sendFile("appstatus.json");
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, "Sent appstatus to server on: {0}\n", new Date());
         } catch (IOException ex) {
             Logger.getLogger(SendAppStatus.class.getName()).log(Level.SEVERE, null, ex);
         }

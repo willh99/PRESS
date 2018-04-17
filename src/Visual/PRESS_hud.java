@@ -18,6 +18,7 @@ package Visual;
 
 
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -608,8 +609,6 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             ParseJSON.createStatusJSON(true, false, "ManualOverride");
             modeLabel.setText("Selected Mode: Buy");
-            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
             sas.start();
         }
@@ -623,8 +622,6 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             ParseJSON.createStatusJSON(false, true, "ManualOverride");
             modeLabel.setText("Selected Mode: Sell");
-            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
             sas.start();
         }
@@ -652,40 +649,42 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             ParseJSON.createStatusJSON(false, false, "ManualOverride");
             modeLabel.setText("Selected Mode: Halt");
-            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
             sas.start();
         }
     }//GEN-LAST:event_haltButtonActionPerformed
 
     private void dataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataButtonActionPerformed
-        // Go to the data panel and display the contents of the Today's Data CSV
-        ProcessData.populateTable("TodaysData.csv", dataTable);
-        ProcessData.populateTableWithJSON("v_log.json", voltsTable);
-        ProcessData.populateTableWithJSON("t_log.json", tempTable);
-        ProcessData.populateTableWithJSON("bt_log.json", battTempTable);
-        
-        priceTabGraphPanel.removeAll();
-        voltsTabGraphPanel.removeAll();
-        tempTabGraphPanel.removeAll();
-        battTempTabGraphPanel.removeAll();
-        JPanel priceG = ProcessData.plotPriceData();
-        JPanel voltG = ProcessData.plotPower();
-        JPanel tempG = ProcessData.plotTemp("t_log.json");
-        JPanel btempG = ProcessData.plotTemp("bt_log.json");
-        
-        GridBagConstraints c =  new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        priceTabGraphPanel.add(priceG, c);
-        voltsTabGraphPanel.add(voltG, c);
-        tempTabGraphPanel.add(tempG, c);
-        battTempTabGraphPanel.add(btempG, c);
-        
-        CardLayout cL = (CardLayout) mainPanel.getLayout();
-        cL.show(mainPanel, "card4");                    
+        try {
+            // Go to the data panel and display the contents of the Today's Data CSV
+            ProcessData.populateTable("TodaysData.csv", dataTable);
+            ProcessData.populateTableWithJSON("v_log.json", voltsTable);
+            ProcessData.populateTableWithJSON("t_log.json", tempTable);
+            ProcessData.populateTableWithJSON("bt_log.json", battTempTable);
+            
+            priceTabGraphPanel.removeAll();
+            voltsTabGraphPanel.removeAll();
+            tempTabGraphPanel.removeAll();
+            battTempTabGraphPanel.removeAll();
+            JPanel priceG = ProcessData.plotPriceData();
+            JPanel voltG = ProcessData.plotPower();
+            JPanel tempG = ProcessData.plotTemp("t_log.json");
+            JPanel btempG = ProcessData.plotTemp("bt_log.json");
+            
+            GridBagConstraints c =  new GridBagConstraints();
+            c.fill = GridBagConstraints.BOTH;
+            c.weightx = 1.0;
+            c.weighty = 1.0;
+            priceTabGraphPanel.add(priceG, c);
+            voltsTabGraphPanel.add(voltG, c);
+            tempTabGraphPanel.add(tempG, c);
+            battTempTabGraphPanel.add(btempG, c);
+            
+            CardLayout cL = (CardLayout) mainPanel.getLayout();                    
+            cL.show(mainPanel, "card4");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(PRESS_hud.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_dataButtonActionPerformed
 
     private void homeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeButtonActionPerformed
@@ -715,8 +714,6 @@ public class PRESS_hud extends javax.swing.JFrame {
         {
             ParseJSON.createStatusJSON(true, true, "ManualOverride");
             modeLabel.setText("Selected Mode: Use Algorithm");
-            //ClientConnect c = new ClientConnect(Globals.getHostName(), Globals.getHostPort(), Globals.getTimeout());
-            //c.sendFile("appstatus.json");
             SendAppStatus sas = new SendAppStatus();
             sas.start();
         }
@@ -739,7 +736,12 @@ public class PRESS_hud extends javax.swing.JFrame {
         cL.show(mainPanel, "card5");
         
         // Get array of profit, buy/sell time from profit.json
-        double[] profit = ProcessData.getProfitMargin();
+        double[] profit;
+        try {
+            profit = ProcessData.getProfitMargin();
+        } catch (FileNotFoundException ex) {
+            profit = new double[] {0,0,0};
+        }
         
         JLabel profitLabel = new JLabel(String.format("Estimated Profit: $%.4f", profit[0]));
         profitLabel.setFont(new Font("Serif", Font.PLAIN, 28));

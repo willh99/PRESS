@@ -17,6 +17,7 @@
 package Tasks;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +34,9 @@ public class DataFetch extends TimerTask {
     {
         try {
             ProcessData.downloadData();
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, "In DataFetch thread:  Successfully obtained data for: {0}\n", new Date());
         } catch (IOException ex) {
-            Logger.getLogger(DataFetch.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, null, ex);
         }
     }
 }

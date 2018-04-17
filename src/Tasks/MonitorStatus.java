@@ -19,6 +19,7 @@ package Tasks;
 import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.InetAddress;
+import java.util.Date;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +50,8 @@ public class MonitorStatus extends TimerTask {
             client.getFile("bt_log.json");
             sleep(20);
             client.getFile("profit.json");
+            Logger.getLogger(Logger.GLOBAL_LOGGER_NAME).log(Level.SEVERE, "In MonitorStatus thread:  Successfully obtained data"
+                    + "from server on: {0}\n", new Date());
         } catch (InterruptedException ex) {
             Logger.getLogger(MonitorStatus.class.getName()).log(Level.SEVERE, null, ex);
         }

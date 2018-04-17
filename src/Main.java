@@ -19,6 +19,7 @@ import Visual.PRESS_hud;
 import java.io.IOException;
 import useData.Scheduler;
 import useData.Globals;
+import useData.ProcessData;
 
 /**
  *
@@ -35,6 +36,7 @@ public class Main {
                 
         // Set behavior of Global Logger //
         PRESSLogger.setup();
+        ProcessData.LoggerSetup();
 
         // Set Global variables //
         Globals.setHostName("10.199.41.127");

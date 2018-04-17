@@ -29,8 +29,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
@@ -53,10 +55,8 @@ import org.json.simple.JSONObject;
  */
 
 public class ProcessData {
-
-    private final static Logger LOGGER = Logger.getLogger(ProcessData.class.getName());
     
-    public static JPanel plotPower()
+    public static JPanel plotPower() throws FileNotFoundException
     {
         Iterator Jarray = ParseJSON.readJSONArray("v_log.json");
         TimeSeries tSeries = new TimeSeries("System Voltage");
@@ -74,7 +74,7 @@ public class ProcessData {
                 d = sdp.parse((String) obj.get("Timestamp"));
                 tSeries.add(new Second(d), (double) obj.get("Voltage"));
             } catch (ParseException | NullPointerException ex) {
-                Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, "ProcessData", ex);
+                Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -87,7 +87,7 @@ public class ProcessData {
                       " " + ldate.getMonth().getDisplayName(TextStyle.FULL, Locale.US) + " " +
                       ldate.getDayOfMonth() + ", " + ldate.getYear();
             } catch (ParseException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -101,7 +101,7 @@ public class ProcessData {
         return chPanel;
     }
     
-    public static JPanel plotTemp(String filename)
+    public static JPanel plotTemp(String filename) throws FileNotFoundException
     {
         Iterator Jarray = ParseJSON.readJSONArray(filename);
         TimeSeries tSeries = new TimeSeries("System Temperature");
@@ -118,7 +118,7 @@ public class ProcessData {
                     Date d = sdp.parse((String) obj.get("Timestamp"));
                     tSeries.add(new Second(d), (double) obj.get("temperature"));
                 } catch (ParseException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -132,7 +132,7 @@ public class ProcessData {
                       " " + ldate.getMonth().getDisplayName(TextStyle.FULL, Locale.US) + " " +
                       ldate.getDayOfMonth() + ", " + ldate.getYear();
             } catch (ParseException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
@@ -146,7 +146,7 @@ public class ProcessData {
         return chPanel;
     }
     
-    public static JPanel plotPriceData() 
+    public static JPanel plotPriceData() throws FileNotFoundException 
     {
         List<DataPoint> priceData = readPriceData("TodaysData.csv");
         TimeSeries tSeries = new TimeSeries("Price ($/MWHr)");
@@ -231,9 +231,7 @@ public class ProcessData {
             fout.write(data, 0, count);
         }
         } catch (MalformedURLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (in != null)
                 in.close();
@@ -243,7 +241,7 @@ public class ProcessData {
     }
     
     // Read data from a .csv file and return a List holding the relevent data
-    private static List<DataPoint> readPriceData(String filename) 
+    private static List<DataPoint> readPriceData(String filename) throws FileNotFoundException 
     {
         List<DataPoint> dataList = new ArrayList<>();
         File file = new File(filename);
@@ -285,7 +283,7 @@ public class ProcessData {
                 
             }
         } catch (IOException | ParseException ex){
-            LOGGER.log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return dataList;
@@ -293,7 +291,7 @@ public class ProcessData {
 
     // Algorithm for processing pricing data and deciding whether to buy/sell
     // Identical methodoloy appied on server-side
-    public static void analyizePriceData () 
+    public static void analyizePriceData () throws FileNotFoundException 
     {
         // Retrieve List of dataPoint's (see below) holding relevant data
         List<DataPoint> dataList = readPriceData("TodaysData.csv");
@@ -346,7 +344,7 @@ public class ProcessData {
                     try {
                         sleep(1);
                     } catch (InterruptedException ex) {
-                        LOGGER.log(Level.SEVERE, null, ex);
+                        Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } else {break;}
@@ -361,7 +359,7 @@ public class ProcessData {
     
     // Populates a table with the contents of a .csv file
     // Assumes that the first row of the .csv are column headers
-    public static void populateTable(String filename, JTable table)
+    public static void populateTable(String filename, JTable table) throws FileNotFoundException
     {
         File file =  new File(filename);
         DefaultTableModel model =  (DefaultTableModel) table.getModel();
@@ -386,10 +384,8 @@ public class ProcessData {
                 if(attributes[1].equals("\"N.Y.C.\""))
                     model.addRow(attributes);
             }  
-        } catch (FileNotFoundException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     
@@ -433,7 +429,7 @@ public class ProcessData {
     
     // Get the profit margin, buy time, and sell time from profit.json
     // and returns them in an array
-    public static double[] getProfitMargin() 
+    public static double[] getProfitMargin() throws FileNotFoundException 
     {
         double[] profit = {0,0,0};
         
@@ -448,10 +444,33 @@ public class ProcessData {
             profit[1] = (double) obj.get("Sell Time");
             profit[2] = (double) obj.get("Buy Time");
         } catch (Exception ex){
-            LOGGER.log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
             //System.out.println();
         }
         
         return profit;
+    }
+    
+    public static void LoggerSetup() throws IOException{
+        Logger LOGGER = Logger.getLogger(ProcessData.class.getName());
+        
+        File path = new File("logs/");
+        File file = new File(path, "DataLogs.txt");
+        
+        path.mkdirs();
+        if(!file.exists())
+            file.createNewFile();
+        
+        FileHandler fileHandler;
+        SimpleFormatter formatter;
+                
+        try {
+            fileHandler = new FileHandler(file.getPath(), true);
+            LOGGER.addHandler(fileHandler);
+            formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+        } catch (IOException | SecurityException ex) {
+            Logger.getLogger(ProcessData.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -16,7 +16,10 @@
  */
 package Tasks;
 
+import java.io.FileNotFoundException;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import useData.ProcessData;
 
 /**
@@ -28,6 +31,10 @@ public class CalculateStatus extends TimerTask{
     @Override
     public void run() 
     {
-        ProcessData.analyizePriceData();
+        try {
+            ProcessData.analyizePriceData();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CalculateStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

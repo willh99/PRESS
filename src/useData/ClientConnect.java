@@ -80,7 +80,7 @@ public class ClientConnect
             fileHandler.setFormatter(formatter);
         } catch (IOException | SecurityException ex) {
             Logger.getLogger(ClientConnect.class.getName()).log(Level.SEVERE, null, ex);
-        }  
+        }
     }
 
     // Send a string. Used in chat and to initialized
