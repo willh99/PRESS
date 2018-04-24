@@ -17,6 +17,7 @@
 import Utility.PRESSLogger;
 import Visual.PRESS_hud;
 import java.io.IOException;
+import useData.ClientConnect;
 import useData.Scheduler;
 import useData.Globals;
 import useData.ProcessData;
@@ -37,11 +38,14 @@ public class Main {
         // Set behavior of Global Logger //
         PRESSLogger.setup();
         ProcessData.LoggerSetup();
+        ClientConnect.LoggerSetup();
 
         // Set Global variables //
-        Globals.setHostName("10.199.41.127");
+        Globals.setHostName("127.0.0.1");
         Globals.setHostPort(5555);
         Globals.setTimeout(4000);
+        Globals.setDebug(true);
+        Globals.setNetworkDebug(false);
 
         // Create the UI //
         PRESS_hud hud = new PRESS_hud();

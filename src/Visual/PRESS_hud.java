@@ -243,7 +243,7 @@ public class PRESS_hud extends javax.swing.JFrame {
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jTextArea1.setTabSize(4);
-        jTextArea1.setText("     Welcome to the Price Reactive Energy Storage System (PRESS). After the instalation of the of battery system, this application can be used to connect with the battery, analyze the system's data, and manually override the buy/sell state of the battery.\n     Start saving energy and dollars with the market efficient provided by PRESS!");
+        jTextArea1.setText("     Welcome to the Price Reactive Energy Storage System (PRESS). After the instalation of the of battery system, this application can be used to connect with the battery, analyze the system's data, and manually override the buy/sell state of the battery.\n     Start saving energy and dollars with the market efficiency provided by PRESS!");
         jTextArea1.setWrapStyleWord(true);
         jScrollPane1.setViewportView(jTextArea1);
 

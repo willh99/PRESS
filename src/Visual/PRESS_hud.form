@@ -404,7 +404,7 @@
                     <Property name="lineWrap" type="boolean" value="true"/>
                     <Property name="rows" type="int" value="5"/>
                     <Property name="tabSize" type="int" value="4"/>
-                    <Property name="text" type="java.lang.String" value="     Welcome to the Price Reactive Energy Storage System (PRESS). After the instalation of the of battery system, this application can be used to connect with the battery, analyze the system&apos;s data, and manually override the buy/sell state of the battery.&#xa;     Start saving energy and dollars with the market efficient provided by PRESS!"/>
+                    <Property name="text" type="java.lang.String" value="     Welcome to the Price Reactive Energy Storage System (PRESS). After the instalation of the of battery system, this application can be used to connect with the battery, analyze the system&apos;s data, and manually override the buy/sell state of the battery.&#xa;     Start saving energy and dollars with the market efficiency provided by PRESS!"/>
                     <Property name="wrapStyleWord" type="boolean" value="true"/>
                   </Properties>
                 </Component>

@@ -38,14 +38,10 @@ public class UpdateVis {
         boolean buy = (boolean) obj.get("Buy");
         boolean sell = (boolean) obj.get("Sell");
         
-        if(buy && !sell){
+        if(buy && !sell)
             label.setText("Controller Status: Buy");
-            return;
-        }
-        else if(!buy && sell){
+        else if(!buy && sell)
             label.setText("Controler Status: Sell");
-            return;
-        }
                 
     }
     

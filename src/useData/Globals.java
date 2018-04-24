@@ -30,6 +30,8 @@ public class Globals {
     private static InetAddress SERVER_HOST = null;
     private static int SERVER_PORT;
     private static int TIMEOUT;
+    private static boolean DEBUG;
+    private static boolean NETWORK_DEBUG;
     
     public static InetAddress getHostName()
     {
@@ -64,5 +66,21 @@ public class Globals {
     {
         if(t>=0)
             TIMEOUT = t;
+    }
+    
+    public static void setDebug(boolean d){
+        DEBUG = d;
+    }
+    
+    public static boolean getDebug(){
+        return DEBUG;
+    }
+    
+    public static void setNetworkDebug(boolean d){
+        NETWORK_DEBUG = d;
+    }
+    
+    public static boolean getNetworkDebug(){
+        return NETWORK_DEBUG;
     }
 }

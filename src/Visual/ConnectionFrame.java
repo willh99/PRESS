@@ -16,6 +16,16 @@
  */
 package Visual;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import useData.Globals;
 import javax.swing.DefaultComboBoxModel;
 import useData.Scheduler;
@@ -30,9 +40,13 @@ public class ConnectionFrame extends javax.swing.JFrame {
      * Creates new form connectionFrame
      * @param h
      */
+    
+    private ArrayList<String> hosts;
+    
     public ConnectionFrame(PRESS_hud h) {
-        initComponents();
+        hosts = getSavedHosts();
         hud = h;
+        initComponents();
     }
 
     /**
@@ -47,22 +61,30 @@ public class ConnectionFrame extends javax.swing.JFrame {
         jScrollBar1 = new javax.swing.JScrollBar();
         mainPanel = new javax.swing.JPanel();
         hostComboBox = new javax.swing.JComboBox<>();
+        portSpinner = new javax.swing.JSpinner();
+        hostTextField = new javax.swing.JTextField();
         titleLabel = new javax.swing.JLabel();
         hostComboLabel = new javax.swing.JLabel();
         portComboLabel = new javax.swing.JLabel();
-        hostTextField = new javax.swing.JTextField();
         hostTextLabel = new javax.swing.JLabel();
+        currentValueLabel = new javax.swing.JLabel();
         addBtn = new javax.swing.JButton();
         applyBtn = new javax.swing.JButton();
-        currentValueLabel = new javax.swing.JLabel();
-        portSpinner = new javax.swing.JSpinner();
+        deleteHostBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         hostComboBox.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         hostComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
-            new String[] { "127.0.0.1" }));
+            new String[]{""}));
+    setComboItems();
+
+    portSpinner.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
+    portSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 65000, 1));
+    portSpinner.setValue(Globals.getHostPort());
+
+    hostTextField.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
 
     titleLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
     titleLabel.setText("Choose Your Host and Port");
@@ -71,14 +93,13 @@ public class ConnectionFrame extends javax.swing.JFrame {
 
     portComboLabel.setText("Port (only change if necessary)");
 
-    hostTextField.setFont(new java.awt.Font("Dialog", 3, 14)); // NOI18N
-    hostTextField.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            hostTextFieldActionPerformed(evt);
-        }
-    });
-
     hostTextLabel.setText("Enter a New Host:");
+
+    currentValueLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+    currentValueLabel.setText("Current host and port: ( "
+        + Globals.getHostName().getHostAddress() + " , "
+        + Globals.getHostPort() + " )"
+    );
 
     addBtn.setText("Add New");
     addBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -94,40 +115,42 @@ public class ConnectionFrame extends javax.swing.JFrame {
         }
     });
 
-    currentValueLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-    currentValueLabel.setText("Current host and port: ( "
-        + Globals.getHostName().getHostAddress() + " , "
-        + Globals.getHostPort() + " )"
-    );
-
-    portSpinner.setFont(new java.awt.Font("Courier New", 1, 18)); // NOI18N
-    portSpinner.setModel(new javax.swing.SpinnerNumberModel(0, null, 65000, 1));
-    portSpinner.setValue(Globals.getHostPort());
+    deleteHostBtn.setText("Remove Saved Host");
+    deleteHostBtn.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            deleteHostBtnActionPerformed(evt);
+        }
+    });
 
     javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
     mainPanel.setLayout(mainPanelLayout);
     mainPanelLayout.setHorizontalGroup(
         mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(mainPanelLayout.createSequentialGroup()
-            .addGap(18, 18, 18)
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(currentValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createSequentialGroup()
+                    .addGap(18, 18, 18)
                     .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(hostTextLabel)
-                        .addComponent(hostComboLabel)
-                        .addComponent(titleLabel)
-                        .addComponent(hostComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(portComboLabel))
-                    .addGap(0, 98, Short.MAX_VALUE))
-                .addGroup(mainPanelLayout.createSequentialGroup()
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(portSpinner)
-                        .addComponent(hostTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(applyBtn, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(currentValueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createSequentialGroup()
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(hostTextLabel)
+                                .addComponent(hostComboLabel)
+                                .addComponent(titleLabel)
+                                .addComponent(hostComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(portComboLabel))
+                            .addGap(0, 98, Short.MAX_VALUE))
+                        .addGroup(mainPanelLayout.createSequentialGroup()
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(portSpinner)
+                                .addComponent(hostTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(applyBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(addBtn, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteHostBtn)))
             .addContainerGap())
     );
     mainPanelLayout.setVerticalGroup(
@@ -151,9 +174,11 @@ public class ConnectionFrame extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(hostTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(addBtn))
-            .addGap(18, 18, 18)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(deleteHostBtn)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
             .addComponent(currentValueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(28, Short.MAX_VALUE))
+            .addContainerGap())
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -185,20 +210,60 @@ public class ConnectionFrame extends javax.swing.JFrame {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // Adds a new IP address string to the hostComboBox
-        // Host IP need to be applied (above) before being set in Globals
+        // Puts new IP at beginning of hosts List and then rewrites file
+        // Combobox.
         String text = hostTextField.getText();
+        
         if(validIP(text)){
+            // Write new IP to file
+            BufferedWriter writer = null;
+            // If the IP doesn't already exist in the list
             if(((DefaultComboBoxModel)hostComboBox.getModel()).getIndexOf(text) == -1) {
-                hostComboBox.addItem(text);
+                hosts.add(hosts.get(0));
+                hosts.set(0, text);
+                saveHosts();
+                setComboItems();
             }
         }
             
     }//GEN-LAST:event_addBtnActionPerformed
 
-    private void hostTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hostTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_hostTextFieldActionPerformed
+    
+// Delete the IP currently select in the hostComboBox
+    private void deleteHostBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteHostBtnActionPerformed
+        String selected = (String) hostComboBox.getSelectedItem();
+        int index=0;
+        
+        while(index<hosts.size()){
+            if(hosts.get(index).equals(selected))
+                break;
+            index++;
+        }
+        
+        hosts.remove(index);
+        saveHosts();
+        setComboItems();
+    }//GEN-LAST:event_deleteHostBtnActionPerformed
 
+    // Save IPs in 'hosts' to a file
+    private void saveHosts(){
+        
+        File path = new File("Settings/");
+        File file = new File(path, "hosts.txt");
+        path.mkdir();
+        
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file));){
+            writer.write(hosts.get(0));
+            writer.newLine();
+
+            for(int i=1; i<hosts.size(); i++){
+                writer.append(hosts.get(i));
+                writer.newLine();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     public static boolean validIP (String ip) {
         try {
@@ -220,6 +285,37 @@ public class ConnectionFrame extends javax.swing.JFrame {
             return !ip.endsWith(".");
         } catch (NumberFormatException nfe) {
             return false;
+        }
+    }
+    
+    private ArrayList<String> getSavedHosts(){
+        ArrayList<String> hostList = new ArrayList<>();
+        File path = new File("Settings/");
+        File file = new File(path, "hosts.txt");
+        if(!file.exists()){
+            path.mkdir();
+            hostList.add("127.0.0.1");
+            return hostList;
+        }
+        
+        // Read file line-by-line to get lists of hosts
+        try (BufferedReader input = new BufferedReader(new FileReader(file))) {
+            String line = null;
+            while (( line = input.readLine()) != null)
+                hostList.add(line);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConnectionFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex){
+            Logger.getLogger(ConnectionFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return hostList;
+    }
+    
+    private void setComboItems(){
+        hostComboBox.removeAllItems();
+        for(int i=0; i<hosts.size(); i++){
+            hostComboBox.addItem(hosts.get(i));
         }
     }
     
@@ -264,6 +360,7 @@ public class ConnectionFrame extends javax.swing.JFrame {
     private javax.swing.JButton addBtn;
     private javax.swing.JButton applyBtn;
     private javax.swing.JLabel currentValueLabel;
+    private javax.swing.JButton deleteHostBtn;
     private javax.swing.JComboBox<String> hostComboBox;
     private javax.swing.JLabel hostComboLabel;
     private javax.swing.JTextField hostTextField;
